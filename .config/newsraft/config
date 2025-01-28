@@ -7,4 +7,4 @@ bind M exec mpv --no-terminal "%l" &
 bind f exec feh "%l"
 bind F exec sxiv "%l"
 
-open-in-browser-command firefox "%l"
+open-in-browser-command org.mozilla.firefox "%l"
