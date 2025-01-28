@@ -18,11 +18,11 @@
 
     "modules-right": [
         "tray",
-        "wireplumber"
+        "wireplumber",
         "cpu",
         "memory",
         "network",
-        "battery",
+        "battery"
     ],
 
     "hyprland/workspaces": {
