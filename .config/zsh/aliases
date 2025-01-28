@@ -63,9 +63,10 @@ alias vtb='nvim -p'
 alias fastvim='nvim -n -u NONE -i NONE -N'
 
 # misc
-alias stow_dot="stow -v --no-folding --dotfiles -t ~ -d ~/.dotfiles ."
+alias stow-dot="stow -v --no-folding --dotfiles -t ~ -d ~/.dotfiles ."
 alias encf="openssl enc -e -aes256 -in"
 alias decf="openssl enc -d -aes256 -in"
 alias weather="curl wttr.in"
 alias wifi="nmcli dev wifi show-password"
 alias rss="newsraft"
+alias pacman-hist="expac --timefmt='%Y-%m-%d %T' '%l\t%w\t%n' | sort"
