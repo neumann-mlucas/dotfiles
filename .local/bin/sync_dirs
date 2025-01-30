@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rsync -av -e 'ssh -p 3141 -i ~/.ssh/ansible' --exclude='audio' ~/Mega ~/Documents neumann@192.168.0.100:/home/neumann/Backup
+rsync -av -e 'ssh -p 3141 -i ~/.ssh/ansible' ~/Documents neumann@192.168.0.100:/home/neumann/Backup
+rsync -av -e 'ssh -p 3141 -i ~/.ssh/ansible' ~/Pictures neumann@192.168.0.100:/home/neumann/Backup
+rsync -av -e 'ssh -p 3141 -i ~/.ssh/ansible' ~/Videos neumann@192.168.0.100:/home/neumann/Backup
