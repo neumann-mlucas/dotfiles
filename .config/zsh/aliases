@@ -63,7 +63,7 @@ alias vtb='nvim -p'
 alias fastvim='nvim -n -u NONE -i NONE -N'
 
 # misc
-alias stow-dot="stow -v --no-folding --dotfiles -t ~ -d ~/.dotfiles ."
+alias stow-dot="stow --restow -v --no-folding --dotfiles -t ~ -d ~/.dotfiles ."
 alias encf="openssl enc -e -aes256 -in"
 alias decf="openssl enc -d -aes256 -in"
 alias weather="curl wttr.in"
