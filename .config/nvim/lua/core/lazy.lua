@@ -42,7 +42,7 @@ require("lazy").setup({
       event = "VeryLazy",
       opts = {},
     },
-    { dir = "~/work/telescope-dictd.nvim" },
+    -- { dir = "~/work/telescope-dictd.nvim" },
   },
 
   -- automatically check for plugin updates
