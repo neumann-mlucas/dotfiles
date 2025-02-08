@@ -9,8 +9,8 @@ sort_sensitive = false
 sort_reverse = false
 sort_dir_first = true
 linemode = "size"
-show_hidden = true
-show_symlink = false
+show_hidden = false
+show_symlink = true
 
 [preview]
 tab_size = 2
@@ -22,6 +22,21 @@ image_quality = 75
 sixel_fraction = 15
 ueberzug_scale = 1
 ueberzug_offset = [0, 0, 0, 0]
+
+[opener]
+doc = [
+	{ run = 'zathura "$@"', orphan = true, for = "unix" },
+	{ run = 'com.github.johnfactotum.Foliate "$@"', orphan = true, for = "unix" },
+]
+
+[open]
+prepend_rules = [
+	{ name = "*.pdf", use = "doc" },
+	{ name = "*.dvu", use = "doc" },
+	{ name = "*.epub", use = "doc" },
+	{ name = "*.azw3", use = "doc" },
+	{ name = "*.mobi", use = "doc" },
+]
 
 [[plugin.prepend_fetchers]]
 id = "git"
