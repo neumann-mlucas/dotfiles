@@ -42,6 +42,12 @@ require("lazy").setup({
       event = "VeryLazy",
       opts = {},
     },
+    {
+      "nvzone/typr",
+      dependencies = "nvzone/volt",
+      opts = {},
+      cmd = { "Typr", "TyprStats" },
+    },
     -- { dir = "~/work/telescope-dictd.nvim" },
   },
 

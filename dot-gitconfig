@@ -17,28 +17,49 @@
     wdiff = diff --word-diff
     dft = difftool
 	fza = "!git ls-files -m -o --exclude-standard | fzf --print0 -m --preview 'git diff {}' --preview-window=top:10:wrap | xargs -0 -t -o git add --all"
+[branch]
+    sort = -committerdate
+[column]
+    ui = auto
+[commit]
+    verbose = true
 [credential]
     helper = store
+[commit]
+    verbose = true
 [delta]
     line-numbers = true
     navigate = true
     side-by-side = true
 [diff]
     algorithm = histogram
-    colorMoved = default
+    colorMoved = plain
+    renames = true
     tool = difftastic
 [difftool]
     prompt = false
 [difftool "difftastic"]
     cmd = difft "$LOCAL" "$REMOTE"
+[fetch]
+    all = true
+    prune = true
+    pruneTags = true
+[init]
+	defaultBranch = master
 [interactive]
     diffFilter = delta --color-only
 [merge]
-    conflictstyle = diff3
+    conflictstyle = zdiff3
     tool = meld
 [pull]
     rebase = true
 [push]
     autoSetupRemote = true
-[init]
-	defaultBranch = master
+    default = simple
+    followTags = true
+[rebase]
+    autoSquash = true
+    autoStash = true
+    updateRefs = true
+[tag]
+    sort = version:refname
