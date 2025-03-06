@@ -29,7 +29,7 @@ require("lazy").setup({
     -- LANGUE SERVER UTILS
     { "williamboman/mason.nvim" },
     { "williamboman/mason-lspconfig.nvim" },
-    -- MISC SIMPLE SETUP
+    -- MISC / SIMPLE SETUP
     { "preservim/tagbar" },
     { "rhysd/clever-f.vim" },
     -- COLORSCHEMES
@@ -42,6 +42,7 @@ require("lazy").setup({
       event = "VeryLazy",
       opts = {},
     },
+    -- FUN
     {
       "nvzone/typr",
       dependencies = "nvzone/volt",
