@@ -89,7 +89,7 @@ vim.did_load_filetypes = 0
 -- [[ Performance ]] --
 
 local disabled_built_ins = {
-  "netrw",
+  -- "netrw",
   "netrwPlugin",
   "netrwSettings",
   "netrwFileHandlers",
