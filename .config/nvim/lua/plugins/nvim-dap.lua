@@ -1,6 +1,11 @@
 local M = {
   "mfussenegger/nvim-dap",
-  dependencies = { "mfussenegger/nvim-dap-python", "nvim-neotest/nvim-nio", "rcarriga/nvim-dap-ui" },
+  dependencies = {
+    "leoluz/nvim-dap-go",
+    "mfussenegger/nvim-dap-python",
+    "nvim-neotest/nvim-nio",
+    "rcarriga/nvim-dap-ui",
+  },
   config = function()
     -- from: github.com/tjdevries/config.nvim
     local dap, dapui = require("dap"), require("dapui")
@@ -8,6 +13,7 @@ local M = {
     -- setup
     dapui.setup()
     require("dap-python").setup("python")
+    require("dap-go").setup()
 
     -- use nvim-dap events to open and close the windows automatically
     dap.listeners.before.attach.dapui_config = function()
