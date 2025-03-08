@@ -2,7 +2,7 @@
 
 # Original Menu Surfraw: https://github.com/TomboFry/menu-surfraw
 
-# Edit here to change what browser you open links in
+export PATH="/var/lib/flatpak/exports/bin:$PATH"
 browser="org.mozilla.firefox"
 
 usage() {

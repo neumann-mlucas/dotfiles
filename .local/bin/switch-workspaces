@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# This script is used to switch to a workspace on the current monitor using wofi
+
+# It uses hyprctl to get the list of workspaces and then uses wofi to display the list of workspaces
+workspaces=$(hyprctl clients | awk 'BEGIN {count=0} /^Window .*$/ {print count " |   " $0; count++}')
+# Get the index of the selected workspace
+workspace_idx=$(echo "$workspaces" | wofi --dmenu | awk '{print $1}')
+# Switch to the selected workspace
+hyprctl dispatch focusworkspaceoncurrentmonitor "$(hyprctl -j clients | jq -r ".[$workspace_idx] | .workspace.id")"
