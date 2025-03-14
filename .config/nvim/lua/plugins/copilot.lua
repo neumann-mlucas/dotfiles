@@ -12,7 +12,7 @@ return {
     config = function()
       -- vim.cmd("Copilot setup")
       require("CopilotChat").setup({
-        --
+        model = "claude-3.7-sonnet",
         -- See Configuration section for options
       })
     end,
