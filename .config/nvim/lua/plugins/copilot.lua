@@ -1,21 +1,40 @@
-return {
+local M = {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     dependencies = {
-      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
-      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+      {
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        event = "InsertEnter",
+        config = function()
+          require("copilot").setup({
+            suggestion = { enabled = false },
+            panel = { enabled = true },
+          })
+        end,
+        lazy = false,
+      },
+      {
+        "zbirenbaum/copilot-cmp",
+        config = function()
+          require("copilot_cmp").setup({
+            method = "getCompletionsCycling", -- This enables multiple suggestions
+            max_item_count = 3, -- Show up to 3 suggestions at once
+            event = { "InsertEnter", "LspAttach" },
+            fix_pairs = true,
+          })
+        end,
+        lazy = false,
+      },
+      { "nvim-lua/plenary.nvim", branch = "master" },
     },
-    build = "make tiktoken", -- Only on MacOS or Linux
-    opts = {
-      -- See Configuration section for options
-    },
+    build = "make tiktoken",
+    opts = {},
     config = function()
-      -- vim.cmd("Copilot setup")
       require("CopilotChat").setup({
         model = "claude-3.7-sonnet",
-        -- See Configuration section for options
       })
     end,
-    -- See Commands section for default commands if you want to lazy load on them
   },
 }
+return M
