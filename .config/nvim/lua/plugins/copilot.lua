@@ -14,6 +14,7 @@ local M = {
         end,
         lazy = false,
       },
+
       {
         "zbirenbaum/copilot-cmp",
         config = function()
@@ -33,6 +34,12 @@ local M = {
     config = function()
       require("CopilotChat").setup({
         model = "claude-3.7-sonnet",
+        mappings = {
+          reset = {
+            normal = "<A-l>",
+            insert = "<A-l>",
+          },
+        },
       })
     end,
   },

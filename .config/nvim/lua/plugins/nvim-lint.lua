@@ -9,7 +9,6 @@ local M = {
 
     lint.linters_by_ft = {
       dockerfile = { "hadolint" },
-      markdown = { "vale" },
       haskell = { "hlint" },
       python = { "mypy", "ruff" },
       sql = { "sqlfluff" },

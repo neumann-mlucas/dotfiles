@@ -14,6 +14,7 @@ local M = {
         sh = { "shfmt" },
         sql = { "sqlfluff" },
         markdown = { "codespell" },
+        yaml = { "yamlfmt" },
         ["*"] = { "trim_whitespace" },
       },
       formatters = {
