@@ -84,7 +84,7 @@ topmem() {
 }
 
 delete-broken-symlinks () {
-  find -L . -name . -o -type d -prune -o -type l -exec rm {} +
+  find . -xtype l -print -exec rm {} +
 }
 
 y() {
