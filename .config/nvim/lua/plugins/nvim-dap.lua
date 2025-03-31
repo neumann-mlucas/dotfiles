@@ -41,7 +41,7 @@ local M = {
     nmap("<F5>", dap.step_back)
     nmap("<F13>", dap.restart)
     nmap("<leader>b", dap.toggle_breakpoint)
-    nmap("<space>gb", dap.run_to_cursor)
+    nmap("<leader>B", dap.run_to_cursor)
     -- eval var under cursor
     nmap("<space>?", function()
       require("dapui").eval(nil, { enter = true })

@@ -126,7 +126,6 @@ vim.keymap.set({ "n", "v", "c" }, ";", ":", { noremap = true, silent = false })
 
 -- useless keys
 map({ "n", "v" }, "M", "<NOP>")
-map({ "n", "v" }, "K", "<NOP>")
 map({ "n", "v" }, "Q", "<NOP>")
 map({ "n", "v" }, "gQ", "<NOP>")
 map({ "n", "v" }, ",", "<NOP>")
