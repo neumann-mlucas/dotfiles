@@ -8,21 +8,20 @@ local M = {
         event = "InsertEnter",
         config = function()
           require("copilot").setup({
-            suggestion = { enabled = false },
-            panel = { enabled = true },
-          })
-        end,
-        lazy = false,
-      },
-
-      {
-        "zbirenbaum/copilot-cmp",
-        config = function()
-          require("copilot_cmp").setup({
-            method = "getCompletionsCycling", -- This enables multiple suggestions
-            max_item_count = 3, -- Show up to 3 suggestions at once
-            event = { "InsertEnter", "LspAttach" },
-            fix_pairs = true,
+            suggestion = {
+              enabled = true,
+              auto_trigger = true,
+              hide_during_completion = false,
+              debounce = 75,
+              keymap = {
+                accept = "[]",
+                accept_word = false,
+                accept_line = false,
+                next = "]]",
+                prev = "[[",
+                dismiss = "][",
+              },
+            },
           })
         end,
         lazy = false,

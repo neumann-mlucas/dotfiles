@@ -30,12 +30,10 @@ local M = {
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-e>"] = cmp.mapping.abort(),
-        ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ["<CR>"] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
-          elseif require("copilot.suggestion").is_visible() then
-            require("copilot.suggestion").accept()
           elseif check_backspace() then
             fallback()
           else
@@ -57,7 +55,6 @@ local M = {
             buffer = "[Buffer]",
             cmdline = "[CMD]",
             cmp_git = "[Git]",
-            copilot = "[Copilot]",
             nvim_lsp = "[LSP]",
             path = "[Path]",
           })[entry.source.name]
@@ -65,7 +62,6 @@ local M = {
         end,
       },
       sources = {
-        { name = "copilot" },
         { name = "nvim_lsp" },
         { name = "buffer" },
         { name = "path" },
