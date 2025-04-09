@@ -1,5 +1,6 @@
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/var/lib/flatpak/exports/bin:$PATH"
+export PATH="var/lib/flatpak/exports/share/applications:$PATH"
 export PATH="$HOME/.go/bin:$PATH"
 
 export CDPATH="$HOME"
@@ -19,9 +20,9 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 export PAGER="bat -p"
 export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
+# export BROWSER=org.mozilla.firefox
 
 export PIPENV_VENV_IN_PROJECT=1
 export PIPENV_MAX_DEPTH=10
 
 export GOPATH="$HOME/.go"
-# export PYTHONBREAKPOINT='pdbp.set_trace'
