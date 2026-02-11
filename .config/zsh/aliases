@@ -20,8 +20,8 @@ alias mv='mv -iv'
 alias rm='rm -v'
 alias cp='cp -iv'
 
-# goes to clipboard selection
-alias yank='yank -- xsel -b'
+# reject tradition, embrace modernity
+alias copilot='copilot --yolo'
 
 # ls options
 alias ls='ls -h --color=always --group-directories-first'
@@ -29,6 +29,7 @@ alias la='ls -al'              # all files and dirs
 alias lh='ls -a | egrep "^\."' # only hidden
 alias ll='ls -l'               # long format
 alias lt='ls -aT | bat'        # tree listing
+alias lu='ll -tU | tail -r'
 
 alias l='ls'
 
@@ -50,6 +51,7 @@ alias gll='git log --oneline --no-merges'
 alias gpl='git pull'
 alias gps='git push'
 alias gst='git status'
+alias gsw='git switch'
 
 # vim stuff
 alias vsp='nvim -O'
@@ -58,7 +60,14 @@ alias vtb='nvim -p'
 alias fastvim='nvim -n -u NONE -i NONE -N'
 
 # python stuff
+alias black='uvx ruff format'
+alias git-sim='uvx git-sim'
+alias isort='uvx ruff check --select I,RUF022 --fix'
+alias radon='uvx radon'
+alias ruff='uvx ruff'
+alias sqlfluff='uvx sqlfluff fix --dialect postgres'
 alias vd='uvx --with openpyxl --with pyarrow visidata'
+alias yt-dlp='uxx yt-dlp'
 
 # misc
 alias stow-dot="stow --restow -v --no-folding --dotfiles -t ~ -d ~/.dotfiles ."

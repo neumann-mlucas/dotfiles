@@ -1,55 +1,52 @@
 #!/bin/bash
 
 fgt() {
-  local mode="all"
+  local mode="modified"
 
   while getopts ":sum" opt; do
     case $opt in
-    s) mode="staged" ;;
-    u) mode="unstaged" ;;
-    m) mode="modified" ;;
-    *) mode="all" ;;
+      s) mode="staged" ;;
+      u) mode="unstaged" ;;
+      m) mode="modified" ;;
+      *) mode="all" ;;
     esac
   done
   shift $((OPTIND - 1))
 
   local q="${*:-}"
-  local file cmd preview
+  local cmd
+  local preview='git diff --color=always -- {}'
 
   case "$mode" in
-  staged)
-    cmd='git diff --name-only --cached -z'
-    preview='git diff --cached --color=always -- "{}" | sed -n "1,200p"'
-    ;;
-  unstaged)
-    cmd='git diff --name-only -z'
-    preview='git diff --color=always -- "{}" | sed -n "1,200p"'
-    ;;
-  modified)
-    cmd='git diff --name-only -z; git diff --name-only --cached -z'
-    preview='git diff --color=always -- "{}"; git diff --cached --color=always -- "{}" | sed -n "1,200p"'
-    ;;
-  all)
-    cmd='git ls-files -z'
-    preview='git diff --color=always -- "{}" | sed -n "1,200p"'
-    ;;
+    staged)   cmd='git diff --name-only --cached -z' ;;
+    unstaged) cmd='git diff --name-only -z' ;;
+    modified) cmd='git diff --name-only -z; git diff --name-only --cached -z' ;;
+    all)      cmd='git ls-files -z' ;;
   esac
 
-  file="$(
-    eval "$cmd" |
-      tr '\0' '\n' |
-      sort -u |
-      fzf --query "$q" \
+  eval "$cmd" |
+    tr '\0' '\n' |
+    sort -u |
+    fzf --query "$q" \
         --height=80% --layout=reverse --border \
         --preview "$preview"
-  )" || return
-  [ -n "$file" ] || return
-  nvim -- "$file"
 }
 
-if [ -n "${ZSH_VERSION-}" ]; then
-  zle -N fgt_modified_widget 'fgt --modified'
-  bindkey '^G' fgt_modified_widget
+fgt-widget() {
+  local -a files
+  local out
+
+  out="$(fgt)" || { zle reset-prompt; return 0; }
+  [[ -n "$out" ]] || { zle reset-prompt; return 0; }
+
+  files=("${(@f)out}")
+  LBUFFER+="${LBUFFER:+ }${(j: :)${(q)files}}"
+  zle reset-prompt
+}
+
+if [[ -n "${ZSH_VERSION-}" ]]; then
+  zle -N fgt-widget
+  bindkey '^G' fgt-widget
 fi
 
 fkill() {
