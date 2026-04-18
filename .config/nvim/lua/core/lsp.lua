@@ -12,7 +12,7 @@ require("mason-lspconfig").setup({
     "vimls",
   },
 })
-require("lspconfig").pyright.setup({})
+-- require("lspconfig").pyright.setup({})
 
 vim.diagnostic.config({
   virtual_text = {
