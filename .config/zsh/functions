@@ -68,7 +68,7 @@ gsw() {
         --preview "git log --oneline --graph --date=short --color=always --pretty='format:%C(auto)%cd %h%d %s' \$(sed 's/^..//' <<< {} | awk '{print \$1}' | sed 's#^remotes/[^/]*/##') --" \
         --preview-window right:50%) || return 0
 
-  [ -z "$branch" ] || return 0
+  [ -n "$branch" ] || return 0
   branch=$(echo "$branch" | sed 's/^..//' | awk '{print $1}' | sed 's#^remotes/[^/]*/##')
   git switch "$branch"
 }
