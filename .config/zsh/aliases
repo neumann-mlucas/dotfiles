@@ -66,8 +66,7 @@ alias radon='uvx radon'
 alias ruff='uvx ruff'
 alias sqlfluff='uvx sqlfluff fix --dialect postgres'
 alias vd='uvx --with openpyxl --with pyarrow visidata'
-alias yt-dlp='uxx yt-dlp'
-alias mypy='uvx mypy --cache-dir .mypy_cache --sqlite-cache .'
+alias yt-dlp='uvx yt-dlp'
 
 # misc
 alias stow-dot="stow --restow -v --no-folding --dotfiles -t ~ -d ~/.dotfiles ."
