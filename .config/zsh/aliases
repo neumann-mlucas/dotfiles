@@ -51,7 +51,6 @@ alias gll='git log --oneline --no-merges'
 alias gpl='git pull'
 alias gps='git push'
 alias gst='git status'
-alias gsw='git switch'
 
 # vim stuff
 alias vsp='nvim -O'
@@ -68,6 +67,7 @@ alias ruff='uvx ruff'
 alias sqlfluff='uvx sqlfluff fix --dialect postgres'
 alias vd='uvx --with openpyxl --with pyarrow visidata'
 alias yt-dlp='uxx yt-dlp'
+alias mypy='uvx mypy --cache-dir .mypy_cache --sqlite-cache .'
 
 # misc
 alias stow-dot="stow --restow -v --no-folding --dotfiles -t ~ -d ~/.dotfiles ."

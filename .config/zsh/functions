@@ -1,8 +1,13 @@
 #!/bin/bash
 
-fgt() {
-  local mode="modified"
+_is_in_git_repo() {
+  git rev-parse HEAD > /dev/null 2>&1
+}
 
+fgt() {
+  _is_in_git_repo || return 1
+
+  local mode="modified"
   while getopts ":sum" opt; do
     case $opt in
       s) mode="staged" ;;
@@ -48,6 +53,53 @@ if [[ -n "${ZSH_VERSION-}" ]]; then
   zle -N fgt-widget
   bindkey '^G' fgt-widget
 fi
+
+gsw() {
+  _is_in_git_repo || return 1
+
+  if [[ "$1" == "master" || "$1" == "develop" ]]; then
+    git switch "$1"
+    return
+  fi
+
+  local branch
+  branch=$(git branch -a -vv --color=always | grep -v '/HEAD\s' |
+    fzf --height 40% --ansi --tac --query="$1" \
+        --preview "git log --oneline --graph --date=short --color=always --pretty='format:%C(auto)%cd %h%d %s' \$(sed 's/^..//' <<< {} | awk '{print \$1}' | sed 's#^remotes/[^/]*/##') --" \
+        --preview-window right:50%) || return 0
+
+  [ -n "$branch" ] || return 0
+  branch=$(echo "$branch" | sed 's/^..//' | awk '{print $1}' | sed 's#^remotes/[^/]*/##')
+  git switch "$branch"
+}
+
+fgst() {
+  _is_in_git_repo || return 1
+  local selection
+  selection=$(git -c color.status=always status --short |
+    fzf --height 40% -m --ansi --nth 2..,.. \
+        --preview 'git diff --color=always {2}' \
+        --preview-window right:60%) || return 0
+  echo "$selection" | awk '{print $2}'
+}
+
+fgtg() {
+  _is_in_git_repo || return 1
+  git tag --sort -version:refname |
+    fzf --height 40% --multi \
+        --preview 'git show --color=always {} | head -50' \
+        --preview-window right:60%
+}
+
+fgll() {
+  _is_in_git_repo || return 1
+  local selection
+  selection=$(git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph |
+    fzf --height 40% --ansi --no-sort --reverse --multi \
+        --preview 'grep -o "[a-f0-9]\{7,\}" <<< {} | head -1 | xargs git show --color=always' \
+        --preview-window right:60%) || return 0
+  echo "$selection" | grep -o '[a-f0-9]\{7,\}'
+}
 
 fkill() {
   local pid
