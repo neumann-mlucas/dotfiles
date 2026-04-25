@@ -49,8 +49,7 @@ opt.undodir = HOME .. "/.vim/undodir//"
 
 -- [[ display ]] --
 opt.background = "dark"
-opt.termguicolors = true
-vim.cmd("colorscheme gruvbox")
+vim.cmd("colorscheme nord")
 
 -- [[ clipboard ]] --
 opt.clipboard = "unnamed,unnamedplus"
@@ -67,7 +66,6 @@ opt.spelllang = { "en_us" }
 
 -- [[ misc ]] --
 opt.isfname = opt.isfname - "="
-opt.lazyredraw = false
 opt.cursorline = true
 opt.updatetime = 100
 opt.hidden = true
@@ -83,20 +81,11 @@ vim.cmd("set diffopt+=linematch:60")
 local disabled_built_ins = {
   -- "netrw",
   -- "netrwPlugin",
-  -- "netrwSettings",
-  -- "netrwFileHandlers",
   "gzip",
   "zip",
   "zipPlugin",
   "tar",
   "tarPlugin",
-  "getscript",
-  "getscriptPlugin",
-  "vimball",
-  "vimballPlugin",
-  "2html_plugin",
-  "logipat",
-  "rrhelper",
   "spellfile_plugin",
   "matchit",
 }
