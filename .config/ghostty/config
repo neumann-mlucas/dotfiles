@@ -68,6 +68,12 @@ keybind = alt+shift+j=goto_split:down
 keybind = alt+shift+k=goto_split:up
 keybind = alt+shift+l=goto_split:right
 keybind = alt+shift+q=close_surface
+keybind = alt+shift+z=toggle_split_zoom
+keybind = alt+shift+equal=equalize_splits
+
+# Prompt navigation (vim j/k)
+keybind = ctrl+shift+k=jump_to_prompt:-1
+keybind = ctrl+shift+j=jump_to_prompt:1
 
 # Clipboard (vim y/p)
 keybind = alt+shift+y=copy_to_clipboard
@@ -121,5 +127,9 @@ keybind = ctrl+shift+s=write_scrollback_file:copy
 # custom-shader = shaders/tft.glsl
 # custom-shader = shaders/underwater.glsl
 # custom-shader = shaders/water.glsl
+
+# Notify when long commands finish
+notify-on-command-finish = unfocused
+notify-on-command-finish-after = 10s
 
 custom-shader-animation = true
