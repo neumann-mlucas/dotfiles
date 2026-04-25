@@ -26,7 +26,7 @@ local M = {
         end,
         lazy = false,
       },
-      { "nvim-lua/plenary.nvim", branch = "master" },
+      { "nvim-lua/plenary.nvim" },
       {
         "MeanderingProgrammer/render-markdown.nvim",
         opts = {
