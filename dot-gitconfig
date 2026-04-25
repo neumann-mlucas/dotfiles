@@ -19,6 +19,10 @@
     wdiff = diff --word-diff
     dft = difftool
 	fza = "!git ls-files -m -o --exclude-standard | fzf --print0 -m --preview 'git diff {}' --preview-window=top:10:wrap | xargs -0 -t -o git add --all"
+    who = shortlog -sn --no-merges HEAD
+    monthly = !git log --since='1 year ago' --format='%ad' --date=format:'%Y-%m' | sort | uniq -c
+    fixes = !git log --name-only --format='' --diff-filter=AM --since='1 year ago' -i -E --grep='(bugfix|hotfix)' | sort | uniq -c | sort -nr | head -20
+    churn = !git log --name-only --format='' --diff-filter=AM --since='1 year ago' | sort | uniq -c | sort -nr | head -20
 [branch]
     sort = -committerdate
 [column]
@@ -33,7 +37,6 @@
     line-numbers = true
     navigate = true
     side-by-side = true
-    syntax-theme = Nord
 [diff]
     algorithm = histogram
     colorMoved = plain
@@ -53,9 +56,14 @@
     diffFilter = delta --color-only
 [merge]
     conflictstyle = zdiff3
-    tool = meld
+    tool = nvimdiff
+[mergetool]
+  prompt = false
+  keepBackup = false
+[mergetool "nvimdiff"]
+  layout = "LOCAL,BASE,REMOTE / MERGED"
 [pull]
-    rebase = true
+    rebase = merges
 [push]
     autoSetupRemote = true
     default = simple
