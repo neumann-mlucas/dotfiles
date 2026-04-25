@@ -1,21 +1,10 @@
 [[ $- != *i* ]] && return
 
-# Set prompt
-export PS1="\[\e[33m\][\[\e[m\]\[\e[33m\]\u\[\e[m\]\[\e[33m\]@\[\e[m\]\[\e[33m\]\h\[\e[m\]\[\e[31m\] -> \[\e[m\]\[\e[37m\]\w\[\e[m\]\[\e[33m\]]\[\e[m\]\$ "
-
-# Keybord repeat
-xset -r 43
-xset -r 44
-xset -r 45
-xset -r 46
-xset r rate 180 50
-
 HISTCONTROL=ignoreboth
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.bash_history
 export HISTIGNORE="ls:cd:vi:vim:nvim"
-export HISTTIMEFORMAT="%h %d %H:%M:%S "
 
 stty -ixon
 shopt -s histappend
