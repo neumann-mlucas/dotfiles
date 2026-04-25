@@ -11,19 +11,14 @@ require("mason-lspconfig").setup({
     "sqlls",
     "vimls",
   },
-  handlers = {
-    function(server_name)
-      require("lspconfig")[server_name].setup({})
-    end,
-    ["lua_ls"] = function()
-      require("lspconfig").lua_ls.setup({
-        settings = {
-          Lua = {
-            diagnostics = { globals = { "vim", "Snacks" } },
-          },
-        },
-      })
-    end,
+})
+
+-- server-specific overrides (applied before automatic_enable)
+vim.lsp.config("lua_ls", {
+  settings = {
+    Lua = {
+      diagnostics = { globals = { "vim", "Snacks" } },
+    },
   },
 })
 
