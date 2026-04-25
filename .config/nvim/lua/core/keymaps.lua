@@ -61,8 +61,6 @@ nmap("<leader>wd", ":execute '!dict -d fd-deu-eng ' . shellescape(expand('<cword
 -- common sense
 map({ "n", "v" }, "H", "^")
 map({ "n", "v" }, "L", "g_")
-map({ "n", "v" }, "H", "^")
-map({ "n", "v" }, "L", "g_")
 
 -- u: undo, U: redo
 map("n", "U", "<c-r>")
@@ -105,9 +103,6 @@ vmap("gp", '"0p')
 vmap("gP", '"0P')
 
 -- MINOR MAPPINGS
-
--- Past from + register in insert mode
-imap("<c-r>", "<c-r>+")
 
 -- visual selection in fold
 nmap("viz", "v[zo]z$")
