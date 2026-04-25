@@ -1,6 +1,4 @@
-# Load aliases and shortcuts
-[ -f $ZDOTDIR/functions ] && source $ZDOTDIR/functions
-[ -f $ZDOTDIR/aliases ] && source $ZDOTDIR/aliases
+# Load local overrides (PATH, machine-specific setup)
 [ -f $ZDOTDIR/local ] && source $ZDOTDIR/local
 
 # Load colors (for plugins)
@@ -31,11 +29,9 @@ export FZF_DEFAULT_OPTS="
     --preview='bat {} --color=always'
     --prompt='❯ ' --pointer='▶ ' --marker='✓ '
     --bind 'ctrl-e:execute(echo {+} | xargs -o nvim)'
-    --bind 'ctrl-y:execute-silent(echo {+} | xclip -i)'
+    --bind 'ctrl-y:execute-silent(echo {+} | pbcopy 2>/dev/null || wl-copy 2>/dev/null || xclip -i 2>/dev/null)'
     --bind 'ctrl-d:preview-down'
-    --bind 'ctrl-b:preview-down'
     --bind 'ctrl-u:preview-up'
-    --bind 'ctrl-f:preview-up'
     --bind '?:toggle-preview'"
 
 export FZF_ALT_C_OPTS="--preview 'et -I {}'"
@@ -52,7 +48,7 @@ source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring
 # History options
 HISTSIZE=1000000000
 SAVEHIST=1000000000
-HISTORY_IGNORE="(ls|cd|pwd|exit|cd)*"
+HISTORY_IGNORE="(ls|cd|pwd|exit) *"
 HISTFILE="$XDG_STATE_HOME/zsh/history"
 
 # The meaning of these options can be found in man page of `zshoptions`.
@@ -82,6 +78,10 @@ _comp_options+=(globdots)
 
 # Add completion for delta (probably needed because of a bug)
 compdef _gnu_generic delta
+
+# Load aliases and shortcuts (must be after compinit)
+[ -f $ZDOTDIR/functions ] && source $ZDOTDIR/functions
+[ -f $ZDOTDIR/aliases ] && source $ZDOTDIR/aliases
 
 # History search
 bindkey '^[[A' history-substring-search-up # Up arrow
@@ -145,7 +145,7 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 # change fzf bindings
 bindkey '^F' fzf-file-widget
 bindkey '^H' fzf-history-widget
-bindkey '^Z' fzf-cd-widget
+bindkey '^Z' fzf-cd-widget # override default suspend binding
 
 bindkey -r '^R'
 bindkey -r '^T'
