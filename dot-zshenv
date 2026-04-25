@@ -12,6 +12,10 @@ export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_DATA_DIRS="/var/lib/flatpak/exports/share/applications:$XDG_DATA_DIRS"
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+# Ensure XDG dirs for zsh state/cache exist
+[[ -d "$XDG_STATE_HOME/zsh" ]] || mkdir -p "$XDG_STATE_HOME/zsh"
+[[ -d "$XDG_CACHE_HOME/zsh" ]] || mkdir -p "$XDG_CACHE_HOME/zsh"
 export RIPGREP_CONFIG_PATH=$XDG_CONFIG_HOME/ripgrep/config
 
 export CM_LAUNCHER='rofi'
