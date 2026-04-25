@@ -1,6 +1,22 @@
 set scrolloff 5
 set download-timeout 20
-set color-list-item-important bold red
+
+# Nord colors
+set color-status cyan default bold
+set color-status-info blue default
+set color-status-fail red default bold
+set color-list-item default default
+set color-list-item-selected black blue
+set color-list-item-unread blue default bold
+set color-list-item-important cyan default bold
+set color-list-feed default default
+set color-list-feed-selected black blue
+set color-list-feed-unread blue default bold
+set color-list-feed-failed red default
+set color-list-section default default
+set color-list-section-selected black blue
+set color-list-section-unread blue default bold
+set color-list-section-failed red default
 
 bind m exec mpv --speed=2 --no-terminal "%l" &
 bind M exec mpv --no-terminal "%l" &
