@@ -1,20 +1,16 @@
---  More default mappings  (v1.11)
---     grn in Normal mode maps to vim.lsp.buf.rename()
---     grr in Normal mode maps to vim.lsp.buf.references()
---     gri in Normal mode maps to vim.lsp.buf.implementation()
---     gO in Normal mode maps to vim.lsp.buf.document_symbol() (this is analogous to the gO mappings in help buffers and :Man page buffers to show a “table of contents”)
---     gra in Normal and Visual mode maps to vim.lsp.buf.code_action()
---     CTRL-S in Insert and Select mode maps to vim.lsp.buf.signature_help()
---     [d and ]d move between diagnostics in the current buffer ([D jumps to the first diagnostic, ]D jumps to the last)
+-- Built-in LSP mappings (0.11+):
+--     grn  rename           grr  references           gri  implementation
+--     gra  code_action      gO   document_symbol      CTRL-S  signature_help
+--     grt  type_definition  grx  codelens_run (0.12)
+--     [d / ]d  diagnostics  [D / ]D  first/last diagnostic
 --
--- We’ve also included versions of some of the mappings from Tim Pope’s vim-unimpaired:
+-- Built-in navigation (0.11+, vim-unimpaired style):
+--     [q ]q [Q ]Q  quickfix    [l ]l [L ]L  loclist
+--     [t ]t [T ]T  tags        [a ]a [A ]A  arglist
+--     [b ]b [B ]B  buffers     [<Space> ]<Space>  add blank line
 --
---     [q, ]q, [Q, ]Q, [CTRL-Q, ]CTRL-Q navigate through the quickfix list
---     [l, ]l, [L, ]L, [CTRL-L, ]CTRL-L navigate through the location list
---     [t, ]t, [T, ]T, [CTRL-T, ]CTRL-T navigate through the tag matchlist
---     [a, ]a, [A, ]A navigate through the argument list
---     [b, ]b, [B, ]B navigate through the buffer list
---     [<Space>, ]<Space> add an empty line above and below the cursor
+-- Treesitter selection (0.12+):
+--     v_an  expand node selection    v_in  shrink node selection
 
 local function map(mode, shortcut, command)
   vim.keymap.set(mode, shortcut, command, { noremap = true, silent = true })
@@ -45,9 +41,6 @@ nmap("<esc>", ":nohlsearch<cr><esc>")
 
 -- write shell cmd to file
 map({ "n", "v" }, "<leader>S", ":.!bash<CR>")
-
--- tagbar screen
-nmap("<leader>tt", ":TagbarToggle<CR>")
 
 -- dictionaries
 --  TODO: write telescope plugin to do that
@@ -89,9 +82,6 @@ nmap("[c", "g;")
 
 nmap("]j", "<c-i>")
 nmap("[j", "<c-o>")
-
--- close buffer
-nmap("<leader>x", ":bdelete<CR>")
 
 -- deplete to void register multiple times
 vmap("<leader>d", '"_d')
