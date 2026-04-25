@@ -53,15 +53,14 @@ source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring
 HISTSIZE=1000000000
 SAVEHIST=1000000000
 HISTORY_IGNORE="(ls|cd|pwd|exit|cd)*"
-HISTFILE="$ZDOTDIR/.zsh_history"
-HISTTIMEFORMAT="%h %d %H:%M:%S "
+HISTFILE="$XDG_STATE_HOME/zsh/history"
 
 # The meaning of these options can be found in man page of `zshoptions`.
-setopt APPEND_HISTORY        # append to history file (Default)
 setopt EXTENDED_HISTORY      # Write the history file in the ':start:elapsed;command' format.
 setopt HIST_IGNORE_DUPS      # Do not record an event that was just recorded again.
 setopt HIST_IGNORE_SPACE     # Do not record an event starting with a space.
 setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from each command line being added to the history.
+setopt HIST_SAVE_NO_DUPS     # Do not write duplicate entries to the history file.
 setopt HIST_VERIFY           # Do not execute immediately upon history expansion.
 setopt INC_APPEND_HISTORY    # Write to the history file immediately, not when the shell exits.
 
@@ -72,7 +71,7 @@ setopt AUTO_CD
 stty -ixon
 
 # Basic tab complete
-autoload -Uz compinit; compinit
+autoload -Uz compinit; compinit -d "$XDG_CACHE_HOME/zsh/zcompdump"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zmodload zsh/complist
