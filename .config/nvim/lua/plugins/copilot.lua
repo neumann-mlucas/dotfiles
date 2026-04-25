@@ -14,12 +14,12 @@ local M = {
               hide_during_completion = false,
               debounce = 75,
               keymap = {
-                accept = "<C-y>",
-                accept_word = false,
+                accept = "<C-l>",
+                accept_word = "<C-j>",
                 accept_line = false,
-                next = "<C-n>",
-                prev = "<C-p>",
-                dismiss = "<C-e>",
+                next = "<M-]>",
+                prev = "<M-[>",
+                dismiss = "<C-]>",
               },
             },
           })
@@ -27,13 +27,6 @@ local M = {
         lazy = false,
       },
       { "nvim-lua/plenary.nvim" },
-      {
-        "MeanderingProgrammer/render-markdown.nvim",
-        opts = {
-          file_types = { "markdown" },
-        },
-        ft = { "markdown" },
-      },
     },
     build = "make tiktoken",
     opts = {},
