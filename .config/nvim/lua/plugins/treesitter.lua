@@ -27,7 +27,7 @@ local M = {
         "markdown_inline",
         "regex",
       },
-      highlight = { enable = true, additional_vim_regex_highlightimg = false },
+      highlight = { enable = true, additional_vim_regex_highlighting = false },
       incremental_selection = { enable = false },
       indent = { enable = true },
       -- See: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
@@ -72,16 +72,9 @@ local M = {
           },
         },
       },
-      autotag = {
-        enable = true,
-        filetypes = {
-          "html",
-          "javascript",
-          "javascriptreact",
-          "typescriptreact",
-        },
-      },
     })
+
+    require("nvim-ts-autotag").setup()
 
     local rainbow_delimiters = require("rainbow-delimiters")
 
