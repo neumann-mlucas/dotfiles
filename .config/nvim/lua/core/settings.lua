@@ -1,6 +1,3 @@
--- enable lua plugins caching
-vim.loader.enable()
-
 local opt = vim.opt
 HOME = os.getenv("HOME")
 
@@ -69,7 +66,6 @@ opt.spell = false
 opt.spelllang = { "en_us" }
 
 -- [[ misc ]] --
-opt.path = opt.path + ".,**"
 opt.isfname = opt.isfname - "="
 opt.lazyredraw = false
 opt.cursorline = true
@@ -81,10 +77,6 @@ opt.ttimeoutlen = 100
 opt.virtualedit = "block"
 
 vim.cmd("set diffopt+=linematch:60")
-
--- [[ filetype detection ]]
-vim.g.do_filetype_lua = 1
-vim.did_load_filetypes = 0
 
 -- [[ Performance ]] --
 
