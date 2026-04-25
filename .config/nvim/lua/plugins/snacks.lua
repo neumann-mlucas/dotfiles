@@ -6,10 +6,11 @@ local M = {
   opts = {
     animate = { enabled = true },
     bigfile = { enabled = true },
-    bufdelete = { enabled = false },
+    bufdelete = { enabled = true },
     dashboard = { enabled = true },
     debug = { enabled = false },
     dim = { enabled = false },
+    explorer = { enabled = true },
     git = { enabled = false },
     gitbrowse = { enabled = false },
     indent = { enabled = true },
@@ -17,7 +18,7 @@ local M = {
     lazygit = { enabled = true },
     notifier = { enabled = true, timeout = 5000 },
     quickfile = { enabled = false },
-    rename = { enabled = false },
+    rename = { enabled = true },
     scope = { enabled = false },
     scratch = { enabled = false },
     scroll = { enabled = true },
@@ -34,6 +35,20 @@ local M = {
     },
   },
   keys = {
+    {
+      "<leader>x",
+      function()
+        Snacks.bufdelete()
+      end,
+      desc = "Delete Buffer",
+    },
+    {
+      "<leader>e",
+      function()
+        Snacks.explorer()
+      end,
+      desc = "File Explorer",
+    },
     {
       "<leader>zz",
       function()
