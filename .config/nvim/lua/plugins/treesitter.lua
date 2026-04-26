@@ -4,7 +4,6 @@ local M = {
   build = ":TSUpdate",
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",
-    "HiPhish/rainbow-delimiters.nvim",
     "windwp/nvim-ts-autotag",
   },
   config = function()
@@ -27,7 +26,7 @@ local M = {
         "markdown_inline",
         "regex",
       },
-      highlight = { enable = true, additional_vim_regex_highlightimg = false },
+      highlight = { enable = true, additional_vim_regex_highlighting = false },
       incremental_selection = { enable = false },
       indent = { enable = true },
       -- See: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
@@ -72,38 +71,9 @@ local M = {
           },
         },
       },
-      autotag = {
-        enable = true,
-        filetypes = {
-          "html",
-          "javascript",
-          "javascriptreact",
-          "typescriptreact",
-        },
-      },
     })
 
-    local rainbow_delimiters = require("rainbow-delimiters")
-
-    vim.g.rainbow_delimiters = {
-      strategy = {
-        [""] = rainbow_delimiters.strategy["global"],
-        vim = rainbow_delimiters.strategy["local"],
-      },
-      query = {
-        [""] = "rainbow-delimiters",
-        lua = "rainbow-blocks",
-      },
-      highlight = {
-        "RainbowDelimiterRed",
-        "RainbowDelimiterYellow",
-        "RainbowDelimiterBlue",
-        "RainbowDelimiterOrange",
-        "RainbowDelimiterGreen",
-        "RainbowDelimiterViolet",
-        "RainbowDelimiterCyan",
-      },
-    }
+    require("nvim-ts-autotag").setup()
   end,
 }
 return M

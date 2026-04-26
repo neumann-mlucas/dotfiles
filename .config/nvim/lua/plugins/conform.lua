@@ -48,12 +48,6 @@ local M = {
       notify_no_formatters = true,
     })
 
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      pattern = "*",
-      callback = function(args)
-        require("conform").format({ bufnr = args.buf })
-      end,
-    })
   end,
 }
 return M

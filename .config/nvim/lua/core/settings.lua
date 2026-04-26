@@ -1,6 +1,3 @@
--- enable lua plugins caching
-vim.loader.enable()
-
 local opt = vim.opt
 HOME = os.getenv("HOME")
 
@@ -52,8 +49,7 @@ opt.undodir = HOME .. "/.vim/undodir//"
 
 -- [[ display ]] --
 opt.background = "dark"
-opt.termguicolors = true
-vim.cmd("colorscheme gruvbox")
+vim.cmd("colorscheme nord")
 
 -- [[ clipboard ]] --
 opt.clipboard = "unnamed,unnamedplus"
@@ -69,9 +65,7 @@ opt.spell = false
 opt.spelllang = { "en_us" }
 
 -- [[ misc ]] --
-opt.path = opt.path + ".,**"
 opt.isfname = opt.isfname - "="
-opt.lazyredraw = false
 opt.cursorline = true
 opt.updatetime = 100
 opt.hidden = true
@@ -82,29 +76,16 @@ opt.virtualedit = "block"
 
 vim.cmd("set diffopt+=linematch:60")
 
--- [[ filetype detection ]]
-vim.g.do_filetype_lua = 1
-vim.did_load_filetypes = 0
-
 -- [[ Performance ]] --
 
 local disabled_built_ins = {
   -- "netrw",
   -- "netrwPlugin",
-  -- "netrwSettings",
-  -- "netrwFileHandlers",
   "gzip",
   "zip",
   "zipPlugin",
   "tar",
   "tarPlugin",
-  "getscript",
-  "getscriptPlugin",
-  "vimball",
-  "vimballPlugin",
-  "2html_plugin",
-  "logipat",
-  "rrhelper",
   "spellfile_plugin",
   "matchit",
 }

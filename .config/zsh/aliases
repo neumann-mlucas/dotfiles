@@ -6,7 +6,7 @@ alias df='duf'
 alias diff='delta'
 alias du='dust'
 alias grep='rg'
-alias ls='exa'
+alias ls='eza -h --group-directories-first'
 alias top='btop'
 alias tree='erd -IH'
 alias htop='btm'
@@ -24,7 +24,6 @@ alias cp='cp -iv'
 alias copilot='copilot --yolo'
 
 # ls options
-alias ls='ls -h --color=always --group-directories-first'
 alias la='ls -al'              # all files and dirs
 alias lh='ls -a | egrep "^\."' # only hidden
 alias ll='ls -l'               # long format

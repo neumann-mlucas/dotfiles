@@ -12,7 +12,15 @@ require("mason-lspconfig").setup({
     "vimls",
   },
 })
--- require("lspconfig").pyright.setup({})
+
+-- server-specific overrides (applied before automatic_enable)
+vim.lsp.config("lua_ls", {
+  settings = {
+    Lua = {
+      diagnostics = { globals = { "vim", "Snacks" } },
+    },
+  },
+})
 
 vim.diagnostic.config({
   virtual_text = {
@@ -21,17 +29,17 @@ vim.diagnostic.config({
   virtual_lines = false,
 })
 
-local diagnostic_goto = function(next, severity)
-  local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
-  severity = severity and vim.diagnostic.severity[severity] or nil
-  return function()
-    go({ severity = severity })
-  end
-end
-vim.keymap.set("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
-vim.keymap.set("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
-vim.keymap.set("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
-vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
+-- ]d/[d to jump to the next/previous diagnostic, regardless of severity
+-- ]e/[e to jump to the next/previous error
+vim.keymap.set("n", "]e", function()
+  vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Next Error" })
+vim.keymap.set("n", "[e", function()
+  vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Prev Error" })
+
+-- Built-in completion (nvim 0.12+)
+vim.opt.completeopt = "menuone,noselect,popup"
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
@@ -39,13 +47,41 @@ vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
     local opts = { buffer = ev.buf }
+
+    -- enable built-in LSP completion for this buffer
+    vim.lsp.completion.enable(true, ev.data.client_id, ev.buf, { autotrigger = true })
+
+    -- gD/gd to jump to declaration/definition
+    -- gh to show hover information
+    -- gri/grr/grn/gra built-in (0.11+)
+    -- <space>ca to show available code actions
+    -- <space>rn to rename symbol under cursor
     vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
     vim.keymap.set("n", "gh", vim.lsp.buf.hover, opts)
-    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-
     vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
     vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
+
+    -- completion keymaps: CR to confirm, Tab/S-Tab to navigate
+    vim.keymap.set("i", "<CR>", function()
+      if vim.fn.pumvisible() == 1 then
+        return "<C-y>"
+      end
+      return "<CR>"
+    end, { buffer = ev.buf, expr = true })
+
+    vim.keymap.set("i", "<Tab>", function()
+      if vim.fn.pumvisible() == 1 then
+        return "<C-n>"
+      end
+      return "<Tab>"
+    end, { buffer = ev.buf, expr = true })
+
+    vim.keymap.set("i", "<S-Tab>", function()
+      if vim.fn.pumvisible() == 1 then
+        return "<C-p>"
+      end
+      return "<S-Tab>"
+    end, { buffer = ev.buf, expr = true })
   end,
 })

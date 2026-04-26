@@ -16,17 +16,16 @@
 # background
 background-blur = false
 background-blur-radius = 100
-background-opacity = 0.8
+background-opacity = 1.0
 
 # misc
-theme = GruvboxDark
+theme = Nord
 bold-is-bright = true
-gtk-titlebar = false
 cursor-style = block
 
 # font stuff
 font-family = FiraCode Nerd
-font-size = 14
+font-size = 16
 
 # clipboard
 clipboard-read = allow
@@ -46,18 +45,14 @@ window-padding-y = 10,10
 keybind = ctrl+minus=decrease_font_size:1
 keybind = ctrl+plus=increase_font_size:1
 
-keybind = alt+b=scroll_page_up
-keybind = alt+f=scroll_page_down
-keybind = alt+u=scroll_page_up
-keybind = alt+d=scroll_page_down
-
-keybind = alt+g=scroll_to_bottom
-keybind = alt+shift+g=scroll_to_top
+# Scrolling (vim ctrl+u/d/g)
+keybind = ctrl+shift+u=scroll_page_up
+keybind = ctrl+shift+d=scroll_page_down
 
 # Tabs
-keybind = alt+enter=new_tab
-keybind = alt+tab=next_tab
-keybind = alt+shift+tab=previous_tab
+keybind = alt+shift+t=new_tab
+keybind = alt+shift+]=next_tab
+keybind = alt+shift+[=previous_tab
 keybind = alt+1=goto_tab:1
 keybind = alt+2=goto_tab:2
 keybind = alt+3=goto_tab:3
@@ -65,18 +60,29 @@ keybind = alt+4=goto_tab:4
 keybind = alt+5=goto_tab:5
 keybind = alt+6=goto_tab:6
 
-# Splits
-keybind = alt+s=new_split:right
-keybind = alt+shift+S=new_split:down
+# Splits (vim verbs: v=vertical, s=horizontal, hjkl=navigate)
+keybind = alt+shift+v=new_split:right
+keybind = alt+shift+s=new_split:down
+keybind = alt+shift+h=goto_split:left
+keybind = alt+shift+j=goto_split:down
+keybind = alt+shift+k=goto_split:up
+keybind = alt+shift+l=goto_split:right
+keybind = alt+shift+q=close_surface
+keybind = alt+shift+z=toggle_split_zoom
+keybind = alt+shift+equal=equalize_splits
 
-keybind = alt+a=goto_split:previous
-keybind = alt+d=goto_split:next
+# Prompt navigation (vim j/k)
+keybind = ctrl+shift+k=jump_to_prompt:-1
+keybind = ctrl+shift+j=jump_to_prompt:1
 
-# Clipboard
-keybind = alt+y=copy_to_clipboard
-keybind = alt+p=paste_from_clipboard
+# Clipboard (vim y/p)
+keybind = alt+shift+y=copy_to_clipboard
+keybind = alt+shift+p=paste_from_clipboard
 
-keybind = alt+v=write_scrollback_file:open
+# Misc
+keybind = ctrl+shift+r=reload_config
+keybind = ctrl+shift+semicolon=toggle_command_palette
+keybind = ctrl+shift+s=write_scrollback_file:copy
 
 # ctrl  + shift + page_up         jump_to_prompt:-1
 # ctrl  + shift + page_down       jump_to_prompt:1
@@ -88,8 +94,6 @@ keybind = alt+v=write_scrollback_file:open
 # ctrl  + alt   + shift + j       write_screen_file:open
 # ctrl  + shift + c               copy_to_clipboard
 # ctrl  + shift + v               paste_from_clipboard
-
-keybind = ctrl+p=reload_config
 
 # custom-shader = shaders/animated-gradient-shader.glsl
 # custom-shader = shaders/bettercrt.glsl
@@ -123,5 +127,9 @@ keybind = ctrl+p=reload_config
 # custom-shader = shaders/tft.glsl
 # custom-shader = shaders/underwater.glsl
 # custom-shader = shaders/water.glsl
+
+# Notify when long commands finish
+notify-on-command-finish = unfocused
+notify-on-command-finish-after = 10s
 
 custom-shader-animation = true

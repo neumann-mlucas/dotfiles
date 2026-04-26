@@ -26,10 +26,10 @@ require("lazy").setup({
     -- import your plugins
     { import = "plugins" },
     -- LANGUAGE SERVER UTILS
+    { "neovim/nvim-lspconfig", lazy = false },
     { "williamboman/mason.nvim" },
     { "williamboman/mason-lspconfig.nvim" },
     -- MISC / SIMPLE SETUP
-    { "preservim/tagbar" },
     { "rhysd/clever-f.vim" },
     -- COLOR SCHEMES
     { "ellisonleao/gruvbox.nvim", lazy = false },
