@@ -12,3 +12,8 @@ hash = "187cc58ba7ac3befd49c342129e6f1b6"
 use = "bennyyip/gruvbox-dark"
 rev = "619fdc5"
 hash = "d4c7003ec6dc4efd5d3a050d5c2f2575"
+
+[[flavor.deps]]
+use = "AdithyanA2005/nord"
+rev = "bdf0bd4"
+hash = "816970e00d643d3e8213b430d2148aec"
