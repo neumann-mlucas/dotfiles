@@ -14,7 +14,7 @@ font-size = 16
 # clipboard
 clipboard-read = allow
 clipboard-write = allow
-copy-on-select = clipboard
+copy-on-select = both
 
 # shell integration
 shell-integration = detect
@@ -106,6 +106,7 @@ custom-shader = shaders/cursor_blaze.glsl
 
 # Notify when long commands finish
 notify-on-command-finish = unfocused
+notify-on-command-finish-action = bell,notify
 notify-on-command-finish-after = 10s
 
 custom-shader-animation = true
