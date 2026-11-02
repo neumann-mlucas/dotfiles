@@ -18,7 +18,7 @@ copy-on-select = clipboard
 
 # shell integration
 shell-integration = detect
-shell-integration-features = no-cursor,no-sudo,no-title
+shell-integration-features = no-cursor,no-sudo,no-title,ssh-env,ssh-terminfo
 
 # windows settings
 window-padding-balance = true
