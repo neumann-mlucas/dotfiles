@@ -319,6 +319,18 @@ json-beautify-sort-inplace() {
   jq -S . -- "$input" > "$tmp" && \mv -- "$tmp" "$input" || { \rm -f -- "$tmp"; return 1; }
 }
 
+# garbageday — remove cache and temp files
+garbageday() {
+    find . -type d \( \
+        -name .venv -o \
+        -name __pycache__ -o \
+        -name .tox -o \
+        -name .mypy_cache -o \
+        -name .pytest_cache -o \
+        -name .ruff_cache \
+    \) -prune -print -exec rm -rf -- {} +
+}
+
 # MARKDOWN
 
 # glow — render markdown; width follows the terminal (cap 128), pager when tty
