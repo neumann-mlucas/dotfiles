@@ -75,7 +75,8 @@ opt.title = true
 opt.ttimeoutlen = 100
 opt.virtualedit = "block"
 
-vim.cmd("set diffopt+=linematch:60")
+opt.diffopt:remove("linematch:40")
+opt.diffopt:append("linematch:60")
 
 -- [[ Performance ]] --
 
