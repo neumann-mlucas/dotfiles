@@ -33,7 +33,8 @@ local M = {
     "windwp/nvim-ts-autotag",
   },
   config = function()
-    require("nvim-treesitter").setup({ ensure_installed = parsers })
+    -- main branch: setup() only takes install_dir; install() is a no-op for present parsers
+    require("nvim-treesitter").install(parsers)
 
     require("nvim-treesitter-textobjects").setup({
       select = {

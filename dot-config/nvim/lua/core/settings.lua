@@ -4,7 +4,7 @@ HOME = os.getenv("HOME")
 -- [[ context ]] --
 opt.number = true
 opt.relativenumber = true
-opt.scrolloff = 4
+opt.scrolloff = 8
 opt.signcolumn = "yes"
 opt.wrap = false
 
@@ -34,7 +34,8 @@ opt.splitkeep = "screen"
 
 -- [[ folds ]] --
 vim.o.foldmethod = "expr"
-vim.o.foldexpr = "v:lua.vim.lsp.foldexpr()"
+-- treesitter by default; switched to LSP in LspAttach when the server supports foldingRange
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldlevelstart = 10
 
 -- Fix markdown indentation settings
@@ -50,6 +51,7 @@ opt.undodir = vim.fn.stdpath("state") .. "/undo//"
 -- [[ display ]] --
 opt.background = "dark"
 vim.cmd("colorscheme kanagawa-wave")
+opt.winborder = "rounded"
 
 -- [[ clipboard ]] --
 opt.clipboard = "unnamed,unnamedplus"
@@ -69,7 +71,6 @@ opt.isfname = opt.isfname - "="
 opt.cursorline = true
 opt.updatetime = 100
 opt.hidden = true
-opt.scrolloff = 8
 opt.title = true
 opt.ttimeoutlen = 100
 opt.virtualedit = "block"
