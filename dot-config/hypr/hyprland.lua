@@ -61,8 +61,8 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("hyprpaper")
   -- Time-of-day wallpaper rotation (waits for hyprpaper, enumerates monitors)
   hl.exec_cmd(os.getenv("HOME") .. "/.local/bin/change-wallpaper")
-  -- Blue-light filter, 5500K color temp
-  hl.exec_cmd("hyprsunset -t 5500")
+  -- Day/night blue-light profiles in hyprsunset.conf
+  hl.exec_cmd("hyprsunset")
   -- Clipboard history watcher (feeds SUPER+Y menu)
   hl.exec_cmd("wl-paste --watch cliphist store")
   -- ActivityWatch tray (time tracker)
@@ -113,7 +113,7 @@ hl.config({
 
   decoration = {
     rounding = 10,
-    rounding_power = 16,
+    rounding_power = 4,
     active_opacity = 1.0,
     inactive_opacity = 0.6,
     shadow = {

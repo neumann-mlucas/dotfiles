@@ -68,7 +68,12 @@ end, { desc = "Prev Error" })
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
-    local opts = { buffer = ev.buf }
+    local opts = { buf = ev.buf }
+
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if client and client:supports_method("textDocument/foldingRange") then
+      vim.wo[vim.api.nvim_get_current_win()][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+    end
 
     -- gD/gd to jump to declaration/definition
     -- gh to show hover information

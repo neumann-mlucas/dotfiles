@@ -11,7 +11,7 @@ local M = {
 
         local function map(mode, l, r, opts)
           opts = opts or {}
-          opts.buffer = bufnr
+          opts.buf = bufnr
           vim.keymap.set(mode, l, r, opts)
         end
 
@@ -42,7 +42,6 @@ local M = {
           gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
         end)
         map("n", "<leader>hS", gitsigns.stage_buffer)
-        map("n", "<leader>hu", gitsigns.undo_stage_hunk)
         map("n", "<leader>hR", gitsigns.reset_buffer)
         map("n", "<leader>hp", gitsigns.preview_hunk)
         map("n", "<leader>hb", function()

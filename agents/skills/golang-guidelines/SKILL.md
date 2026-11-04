@@ -45,6 +45,10 @@ For a **monorepo of related CLIs/services**, a production-friendly pattern:
   - Kiro-style: `.<tool>/specs/<feature>/{requirements.md, design.md, tasks.md}`.
 - Pick one, apply it consistently, don't invent a third naming scheme. Skip it entirely for a small change — this is scaffolding for genuinely non-trivial work, not ceremony for a two-file fix.
 
+### Module size (agent economics)
+
+Agents pay input tokens to read context: the same change costs ~6× more in a monolithic file than a modular one (83% input-token drop measured after splitting a 17k-line file — [martinfowler.com/articles/exploring-gen-ai/refactoring-economic-benefit.html](https://martinfowler.com/articles/exploring-gen-ai/refactoring-economic-benefit.html)). Split when a file plus its direct callers no longer fit a lean read. Justify structural refactors by measurement: run one representative change with a fresh agent before and after; compare input tokens.
+
 ## Toolchain versioning
 
 - Pin a minimum `go` version in `go.mod` and let `GOTOOLCHAIN` (automatic since Go 1.21) fetch the matching toolchain for contributors — don't make people manually install the right compiler version.

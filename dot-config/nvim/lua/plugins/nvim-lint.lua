@@ -21,10 +21,7 @@ local M = {
     }
 
     local sqlfluff = require("lint").linters.sqlfluff
-    sqlfluff.args = {
-      "--dialect",
-      "postgres",
-    }
+    sqlfluff.args = { "lint", "--format=json", "--dialect=postgres", "-" }
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
       group = lint_augroup,

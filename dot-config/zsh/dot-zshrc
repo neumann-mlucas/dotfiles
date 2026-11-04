@@ -21,7 +21,7 @@ _src() { local f; for f in "$@"; do [[ -r $f ]] && { source $f; return } done }
 HISTSIZE=1000000000
 SAVEHIST=1000000000
 HISTORY_IGNORE="(ls|cd|pwd|exit)(| *)"
-HISTFILE="$XDG_STATE_HOME/zsh/history"
+export HISTFILE="$XDG_STATE_HOME/zsh/history"
 
 setopt EXTENDED_HISTORY      # ':start:elapsed;command' format
 setopt HIST_IGNORE_DUPS      # skip immediate repeats
@@ -114,6 +114,12 @@ eval "$(atuin init zsh)"
 [[ -r $ZDOTDIR/aliases ]]   && source $ZDOTDIR/aliases
 
 #-------------------------------------------------------------------------------
+# STARTUP — fortune-style greeting
+#-------------------------------------------------------------------------------
+
+# xkcd
+
+#-------------------------------------------------------------------------------
 # WIDGETS — clipboard yank
 #-------------------------------------------------------------------------------
 
@@ -189,6 +195,7 @@ bindkey -M visual 'y' vi-yank-to-clipboard
 
 bindkey -M vicmd 'k' atuin-up-search-vicmd
 bindkey -M vicmd 'j' atuin-down-search-vicmd
+bindkey -M vicmd '^R' atuin-search
 
 #-------------------------------------------------------------------------------
 # KEYBINDINGS — completion menu (vim keys)
@@ -246,3 +253,5 @@ done
 #-------------------------------------------------------------------------------
 
 unfunction _src
+fpath=(~/.zsh/completions $fpath)
+autoload -U compinit && compinit

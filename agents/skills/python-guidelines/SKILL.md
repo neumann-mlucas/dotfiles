@@ -39,6 +39,10 @@ myproject/
   - Kiro-style: `.<tool>/specs/<feature>/{requirements.md, design.md, tasks.md}`.
 - Pick one, apply it consistently, don't invent a third naming scheme. Skip it entirely for a small change — this is scaffolding for genuinely non-trivial work, not ceremony for a two-file fix.
 
+### Module size (agent economics)
+
+Agents pay input tokens to read context: the same change costs ~6× more in a monolithic file than a modular one (83% input-token drop measured after splitting a 17k-line file — [martinfowler.com/articles/exploring-gen-ai/refactoring-economic-benefit.html](https://martinfowler.com/articles/exploring-gen-ai/refactoring-economic-benefit.html)). Split when a file plus its direct callers no longer fit a lean read. Justify structural refactors by measurement: run one representative change with a fresh agent before and after; compare input tokens.
+
 ## Dependency management — uv
 
 - `uv init`, `uv add <pkg>`, `uv sync`, `uv lock`, `uv run <cmd>`. `uv.lock` is committed; don't hand-edit it.

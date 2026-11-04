@@ -65,7 +65,7 @@ alias prek='uvx prek'
 alias radon='uvx radon'
 alias ruff='uvx ruff'
 alias sqlfluff='uvx sqlfluff fix --dialect postgres'
-alias vd='uvx --with openpyxl --with pyarrow visidata'
+alias vd='uvx --with openpyxl --with pyarrow --with psycopg2-binary visidata'
 alias yt-dlp='uvx yt-dlp'
 
 # ansible
@@ -81,4 +81,3 @@ alias wifi="nmcli dev wifi show-password"
 alias rss="newsraft"
 alias pacman-hist="expac --timefmt='%Y-%m-%d %T' '%l\t%w\t%n' | sort"
 alias hashfiles='fd -t f -0 | xargs -0 -P 0 md5sum | sort -k2'
-alias glow='glow --width 128 --pager --style dark'

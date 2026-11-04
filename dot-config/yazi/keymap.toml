@@ -28,8 +28,14 @@ on = "z"
 run = "plugin zoxide"
 desc = "jump via zoxide"
 
+# Yazi 26.9.1 built-in trash browser (also available in default keymap).
 [[mgr.prepend_keymap]]
-on = ["g", "g"]
+on = ["g", "t"]
+run = "plugin trash"
+desc = "Go to trash bin"
+
+[[mgr.prepend_keymap]]
+on = ["g", "i"]
 run = "shell 'lazygit' --block"
 desc = "Open lazygit"
 
@@ -45,7 +51,7 @@ desc = "copy file path"
 
 [[mgr.prepend_keymap]]
 on = ["y", "d"]
-run = "copy dirname"
+run = "copy dirpath"
 desc = "copy directory path"
 
 [[mgr.prepend_keymap]]

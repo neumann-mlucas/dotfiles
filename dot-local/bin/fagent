@@ -1,0 +1,248 @@
+#!/usr/bin/env bash
+# vim: set filetype=sh
+set -Eeuo pipefail
+IFS=$'\n\t'
+# needs bash >=4 (mapfile, safe empty-array expansion under `set -u`) — macOS's
+# /bin/bash is 3.2, so this must resolve via PATH to a newer bash, not /bin/bash
+
+# fuzzy-pick a Claude Code / Codex session (any project), resume on enter
+
+PROG=${0##*/}
+readonly PROG
+
+trap 'printf "%s: failed at line %s\n" "$PROG" "$LINENO" >&2' ERR
+trap 'printf "%s: interrupted\n" "$PROG" >&2; exit 130' INT
+trap 'printf "%s: terminated\n" "$PROG" >&2; exit 143' TERM
+
+if ((BASH_VERSINFO[0] < 4)); then
+  printf '%s: bash >=4 required (found %s)\n' "$PROG" "$BASH_VERSION" >&2
+  exit 1
+fi
+
+SELF=$(command -v "$PROG" || printf '%s\n' "$0")
+readonly SELF
+
+usage() {
+  printf 'usage: %s\n\n' "$PROG"
+  printf '%s\n' 'Fuzzy-pick a Claude Code / Codex session (any project) and resume it.'
+  printf '%s\n' 'No flags; run with no arguments and use fzf to select.'
+}
+
+need() {
+  command -v "$1" >/dev/null 2>&1 || {
+    printf '%s: missing dependency: %s\n' "$PROG" "$1" >&2
+    exit 1
+  }
+}
+
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+# self-dispatch: fzf calls back into this script for the preview pane,
+# since two different jq filters (claude/codex) don't nest cleanly in
+# a single quoted --preview string
+if [[ "${1:-}" == "--preview" ]]; then
+  if [[ $# -ne 3 ]]; then
+    printf '%s: usage: %s --preview <claude|codex> <path>\n' "$PROG" "$PROG" >&2
+    exit 2
+  fi
+  src=$2 path=$3
+  case "$src" in
+  claude | codex) ;;
+  *)
+    printf '%s: unknown preview source: %s\n' "$PROG" "$src" >&2
+    exit 2
+    ;;
+  esac
+
+  need jq
+
+  case "$src" in
+  claude)
+    jq -r '
+      select(.type=="user" or .type=="assistant")
+      | .message as $m
+      | ($m.content
+          | if type=="string" then $m.content
+            elif type=="array" then ([$m.content[]? | select(.type=="text") | .text] | join("\n"))
+            else "" end) as $text
+      | select($text != "" and ($text|test("^<local-command|^<command-")|not))
+      | "── " + .type + " ──\n" + $text + "\n"
+    ' "$path"
+    ;;
+  codex)
+    jq -r '
+      select(.type=="event_msg" and (.payload.type=="user_message" or .payload.type=="agent_message"))
+      | "── " + .payload.type + " ──\n" + .payload.message + "\n"
+    ' "$path"
+    ;;
+  esac | tail -c 3000
+  exit 0
+fi
+
+if [[ $# -gt 0 ]]; then
+  printf '%s: unknown argument: %s\n' "$PROG" "$1" >&2
+  usage >&2
+  exit 2
+fi
+
+need jq
+
+# --- session index, cached by file mtime -----------------------------------
+# Codex alone is ~600 sessions / 500MB of jsonl; re-parsing everything on
+# every launch was the slow part. Cache extracted records per source file,
+# keyed by that file's mtime, and only re-extract files that actually changed
+# (almost always just the one active session) since the last run.
+
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/fagent"
+CACHE_FILE="$CACHE_DIR/index.json"
+readonly CACHE_DIR CACHE_FILE
+mkdir -p "$CACHE_DIR"
+
+extract_claude() {
+  for f in "$@"; do
+    jq -R -n -c --arg src claude --arg path "$f" '
+      [inputs | fromjson?] as $lines
+      | ($lines | map(select(.cwd)) | last.cwd) as $cwd
+      | ($lines | map(select(.timestamp)) | last.timestamp) as $ts
+      | ($lines | map(select(.type=="ai-title")) | last.aiTitle) as $title0
+      | ($lines | map(select(.type=="user" and (.message.content|type=="string"))) | first.message.content[0:300]) as $firstmsg
+      | ($lines | map(select(.sessionId)) | first.sessionId) as $sid
+      | select($ts != null)
+      | {source:$src, ts:$ts, cwd:($cwd // "?"), title:($title0 // $firstmsg // "(untitled)"), sessionId:$sid, path:$path}
+    ' "$f" 2>/dev/null || true
+  done
+}
+
+extract_codex() {
+  [[ $# -eq 0 ]] && return 0
+  jq -R -n -c '
+    reduce (inputs | fromjson?) as $l (
+      {};
+      ($l | input_filename) as $f
+      | .[$f].ts = ($l.timestamp // .[$f].ts)
+      | (if $l.type=="session_meta" then
+           .[$f].cwd = $l.payload.cwd | .[$f].sid = ($l.payload.session_id // $l.payload.id)
+         else . end)
+      | (if (.[$f].title == null and $l.type=="event_msg" and $l.payload.type=="user_message") then
+           .[$f].title = $l.payload.message[0:300]
+         else . end)
+    )
+    | to_entries[]
+    | (.value + {path: .key})
+    | select(.ts != null)
+    | {source:"codex", ts, cwd:(.cwd // "?"), title:(.title // "(untitled)"), sessionId:.sid, path}
+  ' "$@" 2>/dev/null
+}
+
+file_manifest() {
+  need stat
+  case "$(uname -s)" in
+  Darwin) stat -f '%m%t%N' "$@" ;;
+  Linux) stat -c $'%Y\t%n' "$@" ;;
+  *)
+    printf '%s: unsupported OS: %s\n' "$PROG" "$(uname -s)" >&2
+    exit 1
+    ;;
+  esac
+}
+
+shopt -s nullglob
+claude_files=("$HOME"/.claude/projects/*/*.jsonl)
+codex_files=("$HOME"/.codex/sessions/*/*/*/*.jsonl)
+shopt -u nullglob
+all_files=("${claude_files[@]}" "${codex_files[@]}")
+
+[[ ${#all_files[@]} -gt 0 ]] && need fzf
+
+old_cache="{}"
+if [[ -f "$CACHE_FILE" ]]; then
+  if jq -e 'type == "object"' "$CACHE_FILE" >/dev/null 2>&1; then
+    old_cache=$(<"$CACHE_FILE")
+  else
+    printf '%s: ignoring corrupt cache: %s\n' "$PROG" "$CACHE_FILE" >&2
+  fi
+fi
+
+if [[ ${#all_files[@]} -eq 0 ]]; then
+  manifest_json="[]"
+else
+  manifest_json=$(file_manifest "${all_files[@]}" | jq -R -s '
+    split("\n") | map(select(length > 0) | split("\t")) | map({path: .[1], mtime: .[0]})
+  ')
+fi
+
+mapfile -t changed_files < <(jq -n -r --argjson manifest "$manifest_json" --argjson cache "$old_cache" '
+  $manifest[] | select(.mtime != ($cache[.path].mtime // "")) | .path
+')
+
+changed_claude=() changed_codex=()
+for f in "${changed_files[@]}"; do
+  case "$f" in
+  "$HOME"/.claude/projects/*) changed_claude+=("$f") ;;
+  "$HOME"/.codex/sessions/*) changed_codex+=("$f") ;;
+  esac
+done
+
+new_records=$( { extract_claude "${changed_claude[@]}"; extract_codex "${changed_codex[@]}"; } | jq -s '.')
+
+cache=$(jq -n \
+  --argjson manifest "$manifest_json" \
+  --argjson old "$old_cache" \
+  --argjson new "$new_records" '
+  ($manifest | map({(.path): .mtime}) | add // {}) as $mtimes
+  | ($new | map({(.path): {mtime: $mtimes[.path], record: .}}) | add // {}) as $newcache
+  | ($manifest | map({(.path): true}) | add // {}) as $live
+  | ($old + $newcache) | with_entries(select($live[.key]))
+')
+
+printf '%s\n' "$cache" > "$CACHE_FILE.tmp" && mv "$CACHE_FILE.tmp" "$CACHE_FILE"
+
+# pad/truncate display copies to multiples of 8 so raw tab stops (terminal
+# default) land in the same place every row; keep the untouched cwd in a
+# hidden trailing column since truncation is lossy and `cd` needs the real path
+idx=$(jq -r '
+  def fit(n): if (length > n) then ("…" + .[length - (n - 1):]) else . + (" " * (n - length)) end;
+  [.[].record] | sort_by(.ts) | reverse | .[]
+  | [(.source | fit(8)),
+     (.ts|sub("\\.\\d+Z$";"Z")|fromdateiso8601|localtime|strftime("%Y-%m-%d %H:%M") | fit(16)),
+     (.cwd | fit(64)),
+     (.title|gsub("<[^>]+>";" ")|gsub("\\s+";" ")|ltrimstr(" ")) as $t
+     | (if ($t|length) > 100 then ($t[0:100] + "…") else $t end),
+     .sessionId, .path, .source, .cwd]
+  | @tsv
+' <<< "$cache")
+
+[[ -z "$idx" ]] && exit 0
+
+if ! sel=$(printf '%s\n' "$idx" | fzf --height=80% --layout=reverse --border \
+  --delimiter=$'\t' --with-nth=1,2,3,4 \
+  --preview "$SELF --preview {1} {6}" \
+  --preview-window up:70%:wrap); then
+  exit 0
+fi
+
+[[ -z "${sel:-}" ]] && exit 0
+
+IFS=$'\t' read -r _ _ _ _ sid _ src proj <<< "$sel"
+
+case "$src" in
+claude)
+  need claude
+  cmd=(claude -r "$sid")
+  ;;
+codex)
+  need codex
+  cmd=(codex resume "$sid")
+  ;;
+*)
+  printf '%s: unknown source: %s\n' "$PROG" "$src" >&2
+  exit 2
+  ;;
+esac
+
+# no `exec`: on Windows/Git Bash, claude/codex are npm .cmd shims, not native
+# executables, and exec-ing a shim isn't reliable — a plain call works on both.
+cd -- "$proj" && "${cmd[@]}"

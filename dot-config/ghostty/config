@@ -1,18 +1,3 @@
-# This is the configuration file for Ghostty.
-#
-# This template file has been automatically created at the following
-# path since Ghostty couldn't find any existing config files on your system:
-#
-#   /home/neumann/.config/ghostty/config
-#
-# The template does not set any default options, since Ghostty ships
-# with sensible defaults for all options. Users should only need to set
-# options that they want to change from the default.
-#
-# Run `ghostty +show-config --default --docs` to view a list of
-# all available config options and their default values.
-#
-
 # background
 background-blur = false
 background-opacity = 1.0
@@ -29,11 +14,11 @@ font-size = 16
 # clipboard
 clipboard-read = allow
 clipboard-write = allow
-copy-on-select = clipboard
+copy-on-select = both
 
 # shell integration
-shell-integration = zsh
-shell-integration-features = no-cursor,no-sudo,no-title
+shell-integration = detect
+shell-integration-features = no-cursor,no-sudo,no-title,ssh-env,ssh-terminfo
 
 # windows settings
 window-padding-balance = true
@@ -121,6 +106,7 @@ custom-shader = shaders/cursor_blaze.glsl
 
 # Notify when long commands finish
 notify-on-command-finish = unfocused
+notify-on-command-finish-action = bell,notify
 notify-on-command-finish-after = 10s
 
 custom-shader-animation = true

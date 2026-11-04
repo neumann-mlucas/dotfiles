@@ -27,8 +27,8 @@ require("lazy").setup({
     { import = "plugins" },
     -- LANGUAGE SERVER UTILS
     { "neovim/nvim-lspconfig", lazy = false },
-    { "williamboman/mason.nvim" },
-    { "williamboman/mason-lspconfig.nvim" },
+    { "mason-org/mason.nvim" },
+    { "mason-org/mason-lspconfig.nvim" },
     { "WhoIsSethDaniel/mason-tool-installer.nvim" },
     -- MISC / SIMPLE SETUP
     { "rhysd/clever-f.vim" },

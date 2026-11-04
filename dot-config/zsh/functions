@@ -318,3 +318,39 @@ json-beautify-sort-inplace() {
   tmp="$(mktemp)" || return
   jq -S . -- "$input" > "$tmp" && \mv -- "$tmp" "$input" || { \rm -f -- "$tmp"; return 1; }
 }
+
+# garbageday — remove cache and temp files
+garbageday() {
+    find . -type d \( \
+        -name .venv -o \
+        -name __pycache__ -o \
+        -name .tox -o \
+        -name .mypy_cache -o \
+        -name .pytest_cache -o \
+        -name .ruff_cache \
+    \) -prune -print -exec rm -rf -- {} +
+}
+
+# MARKDOWN
+
+# glow — render markdown; width follows the terminal (cap 128), pager when tty
+glow() {
+  local w=${COLUMNS:-$(tput cols 2>/dev/null || echo 80)}
+  local -a opts=(--width $w --style dark)
+  [[ -t 1 ]] && opts+=(--pager)
+  command glow "${opts[@]}" "$@"
+}
+
+# FUN
+
+# xkcd — show a random xkcd comic, sized to the terminal (chafa)
+xkcd() {
+  local -r max=3303  # #404 doesn't exist (the joke); skip it below
+  local num img cols lines
+  num=$(( (RANDOM % max) + 1 )); [[ $num == 404 ]] && num=405
+  img=$(curl -s --max-time 3 "https://xkcd.com/$num/info.0.json" | jq -r .img) || return
+  [[ -n $img ]] || return
+  cols=$(tput cols 2>/dev/null); cols=${cols:-${COLUMNS:-80}}
+  lines=$(tput lines 2>/dev/null); lines=${lines:-${LINES:-24}}
+  curl -s --max-time 5 "$img" | chafa --size "${cols}x$((lines - 2))" -
+}

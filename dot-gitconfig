@@ -6,6 +6,7 @@
 [core]
     editor = nvim
     pager = delta
+    excludesfile = ~/.gitignore_global
 [alias]
     amend = commit --amend --no-edit
     blame = blame -w -C

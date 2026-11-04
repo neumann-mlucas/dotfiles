@@ -19,6 +19,8 @@ local parsers = {
   "regex",
   "sql",
   "toml",
+  "tsx",
+  "typescript",
   "vim",
   "yaml",
 }
@@ -33,7 +35,8 @@ local M = {
     "windwp/nvim-ts-autotag",
   },
   config = function()
-    require("nvim-treesitter").setup({ ensure_installed = parsers })
+    -- main branch: setup() only takes install_dir; install() is a no-op for present parsers
+    require("nvim-treesitter").install(parsers)
 
     require("nvim-treesitter-textobjects").setup({
       select = {
@@ -51,10 +54,11 @@ local M = {
     require("nvim-ts-autotag").setup()
 
     vim.api.nvim_create_autocmd("FileType", {
-      pattern = parsers,
       callback = function(ev)
-        pcall(vim.treesitter.start, ev.buf)
-        vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        local lang = vim.treesitter.language.get_lang(vim.bo[ev.buf].filetype)
+        if vim.tbl_contains(parsers, lang) and pcall(vim.treesitter.start, ev.buf) then
+          vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
       end,
     })
 
