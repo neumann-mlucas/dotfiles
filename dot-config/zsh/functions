@@ -354,3 +354,6 @@ xkcd() {
   lines=$(tput lines 2>/dev/null); lines=${lines:-${LINES:-24}}
   curl -s --max-time 5 "$img" | chafa --size "${cols}x$((lines - 2))" -
 }
+
+# generate new channel urls file for jellyfin
+yt-sync() { awk '/youtube\.com\/feeds/ {print $1}' ~/.config/newsraft/feeds > ~/Sync/newsboat-urls.txt; }
