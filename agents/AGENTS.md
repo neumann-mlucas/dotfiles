@@ -40,12 +40,7 @@
 
 ## Debug Flow
 
-1. Reproduce
-2. Isolate
-3. Identify root cause
-4. Patch minimal surface
-5. Test
-6. Verify no regressions
+Reproduce → isolate → root cause → patch minimal surface → test → verify no regressions.
 
 ## Failure Handling
 
@@ -63,23 +58,17 @@
 
 ## Git Worktrees
 
-- Isolate branch work in a worktree via `wt`. Never `git checkout` in the repo root — it is the shared hub other worktrees and agents read.
-- `wt` supersedes generic worktree helpers/skills. Never call `git worktree add|remove` directly; `wt` owns dir naming, config copying, hook install, removal guards.
-- Run `wt` from anywhere inside the repo — it resolves the main root itself, including from another worktree.
-- Create: `WT_NO_CD=1 wt <prefix>/<slug>` — prints the new path. Always set `WT_NO_CD=1`; on a TTY `wt` otherwise execs an interactive shell and blocks.
-- Slug must be lowercase-hyphenated (`a-z0-9-`).
-- Base comes from prefix: `hotfix/` and `release/` fork `origin/<default>`, everything else `origin/develop` when it exists. Pass explicit base only when the task names one; never pass current HEAD.
-- Ask the user which prefix to use when the task doesn't name or imply one.
-- Dir is `<repo>-<slug>` beside the repo root. Read it with `wt path <branch>`; never construct it. List with `wt ls`.
-- Work only inside own worktree. Never edit another worktree or the hub.
-- Remove: `wt rm <branch>`. Refuses on uncommitted changes, or commits neither integrated nor pushed. `wt rm --force` deletes the dir irrecoverably — ask user first, every time.
-- `wt cleanup` fetches, then interactively removes integrated worktrees. User's call — never run unasked.
-- `wt` rejects uppercase/underscore slugs, so it cannot check out ticket-style remote branches (`hotfix/TPDEV-243-match-fx-option`). Ask before falling back to raw `git worktree add`.
-- New worktree gets `.env .envrc .pre-commit-config.yaml .tool-versions .nvmrc` copied from root, plus `codegraph init` when the root is indexed. Run `codegraph sync` in the worktree after edits, before `codegraph explore` — nothing else syncs it.
-- `sync_repositories` refreshes every repo's default branch and index. Maintenance, network-heavy — never run unasked.
+- Branch work goes in a worktree: `WT_NO_CD=1 wt <prefix>/<slug>` prints its path (slug `a-z0-9-`; base comes from the prefix, never pass HEAD). Details: `wt --help`.
+- Ask which prefix when the task doesn't name or imply one.
+- Work only inside own worktree; never edit another worktree or the hub. Path via `wt path <branch>`, never constructed.
+- Remove with `wt rm <branch>`. `wt rm --force`, `wt cleanup`, `sync_repositories` are the user's call — ask first.
+- Ticket-style branches (uppercase/underscore) fail in `wt`; ask the user.
+- Indexed repo: run `codegraph sync` in the worktree after edits, before `codegraph explore`.
+- Hooks block `git checkout`/`switch` in the hub and raw `git worktree add|remove`.
 
 ## Testing
 
+- Done = `just check` exits 0 when the repo defines it (a Stop hook runs it).
 - Test changed behavior first.
 - Narrow fast tests before full suite.
 - Verify fix after changes — no success claims w/o validation.
@@ -91,7 +80,7 @@
 - Inspect CSV/TSV/Parquet with `duckdb -c "SELECT col FROM 'file.csv' LIMIT 5"`; never `awk`/`cut`/`sed`/`pandas.read_*`.
 - Inspect JSON with `jq '.path.to.field' file.json`; never text tools.
 - Inspect YAML/TOML with `yq '.path.to.field' file.yaml`; never text tools.
-- Use `gh` for GitHub API calls; never `curl github.com`.
+- Use `gh` for GitHub API calls.
 - Prefer JSON output (`--json`, `--jq`, `--format json`) over scraping human tables.
 - If a repo has `.codegraph/`, use `codegraph explore` before `rg`/`sed`/`nl` for code understanding, symbols, callers, and data flow.
 - Search exact text with `rg`; search paths with `fd`.

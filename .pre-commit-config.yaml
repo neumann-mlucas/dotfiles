@@ -42,6 +42,12 @@ repos:
         language: system
         files: ^agents/skills/shell-guidelines/SKILL\.md$
         pass_filenames: false
+      - id: claude-hooks-test
+        name: claude code hooks self-test
+        entry: dot-claude/hooks/test-hooks.sh
+        language: system
+        files: ^dot-claude/hooks/
+        pass_filenames: false
       - id: stow-dry-run
         name: stow --no dry run
         entry: bash -c 'mkdir -p /tmp/stow-target && stow --dir="$PWD" --target=/tmp/stow-target --no --verbose=1 --dotfiles .'
