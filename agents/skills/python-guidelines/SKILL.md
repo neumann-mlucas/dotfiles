@@ -1,6 +1,6 @@
 ---
 name: python-guidelines
-description: Project-level Python guidelines — src/ layout, uv (+ dependency cooldown), ruff/ty/mypy, prek, just, typer/pydantic CLIs, pytest markers, testing LLM-generated code, Dockerfile/CI placement. Trigger on "new python project", "python project layout", "set up a python repo", "pyproject.toml", "python best practices", or starting/restructuring a Python codebase (not a one-off script — see `shell-guidelines` for that).
+description: Project-level Python guidelines — src/ layout, uv (+ dependency cooldown), ruff/ty/mypy, prek, just, typer/pydantic CLIs, pytest markers, testing LLM-generated code, Dockerfile/CI placement. Trigger on "new python project", "python project layout", "set up a python repo", "pyproject.toml", "python best practices", starting/restructuring a Python codebase, or adding tests/lint/type-check/pre-commit config to one (not a one-off script — see `shell-guidelines` for that).
 ---
 
 # Python Project Guidelines
@@ -31,17 +31,7 @@ myproject/
 - This is the recommended default for *new* projects. Some existing/legacy codebases use a flat multi-package layout instead, often for vendoring or historical reasons — that's usually accumulated debt, not a pattern to copy into a new repo.
 - `docs/` for markdown design docs, `tests/` mirrors `src/myproject/` structure.
 
-### AI-agent project docs
-
-- **`AGENTS.md`** at the repo root — the closest thing to a real cross-tool standard as of 2026: an open, plain-markdown format read by 20+ coding agents/tools (setup commands, code style, architectural boundaries). Symlink tool-specific filenames (`CLAUDE.md`, etc.) to it instead of maintaining duplicates.
-- For a non-trivial feature, a written spec before code pays for itself. No single naming convention has fully won yet, but the shape converges on requirements → plan → tasks, one dir per feature. Two real conventions in active use:
-  - GitHub Spec Kit: `.specify/specs/<NNN-feature>/{spec.md, plan.md, tasks.md}`, plus `.specify/memory/constitution.md` for repo-wide governing principles.
-  - Kiro-style: `.<tool>/specs/<feature>/{requirements.md, design.md, tasks.md}`.
-- Pick one, apply it consistently, don't invent a third naming scheme. Skip it entirely for a small change — this is scaffolding for genuinely non-trivial work, not ceremony for a two-file fix.
-
-### Module size (agent economics)
-
-Agents pay input tokens to read context: the same change costs ~6× more in a monolithic file than a modular one (83% input-token drop measured after splitting a 17k-line file — [martinfowler.com/articles/exploring-gen-ai/refactoring-economic-benefit.html](https://martinfowler.com/articles/exploring-gen-ai/refactoring-economic-benefit.html)). Split when a file plus its direct callers no longer fit a lean read. Justify structural refactors by measurement: run one representative change with a fresh agent before and after; compare input tokens.
+Repo-wide harness — `AGENTS.md`, spec dirs, module size, `just check` done-gate, auxiliary prek hooks, changelog, guardrails for LLM-written code: see `repo-harness`.
 
 ## Dependency management — uv
 
@@ -75,19 +65,19 @@ exclude-newer = "7 days"
 
 - **7 days is a commonly recommended default.** A stricter 14-day window is also a reasonable, equally valid choice for teams wanting more margin — pick one, don't leave it unset on a new project.
 - Set it in `pyproject.toml` for a per-project value, or `~/.config/uv/uv.toml` for a personal global default.
-- **`pip-audit`** (or `uv`'s equivalent lockfile-scanning workflow) for the complementary check: not "is this version too fresh" but "does anything in the lockfile have a *known, published* CVE." Run in CI, not necessarily on every commit — it hits a vulnerability database over the network and is slower than a pre-commit hook should be.
+- **`uv audit`** for the complementary check: not "is this version too fresh" but "does anything in the lockfile have a *known, published* CVE." Run in CI, not necessarily on every commit — it hits a vulnerability database over the network and is slower than a pre-commit hook should be.
 
 ## Linting, formatting, and type checking
 
 - **`ruff format`** replaces `black`; **`ruff check`** replaces `flake8`/`isort`/`pyupgrade`/`bandit`/etc. One Rust binary, 800+ rules; rarely reach for the old tools individually.
-- Select rule groups deliberately rather than turning on everything at once — a solid starting set, each as its own named pre-commit hook so failures are legible: imports (`I`), complexity (`C90`), pycodestyle/pyflakes (`E,F,W`), bugbear (`B`), pyupgrade (`UP`), simplify (`SIM`), comprehensions/misc (`C4,PIE,RET,ISC`), logging (`LOG,G`), pathlib (`PTH`), datetime-tz (`DTZ`), pandas-vet (`PD`, only if pandas is in use), bandit security (`S`). Drop groups that don't apply.
+- Select rule groups deliberately in `[tool.ruff.lint] select = [...]` rather than turning on everything at once — a solid starting set: imports (`I`), complexity (`C90`), pycodestyle/pyflakes (`E,F,W`), bugbear (`B`), pyupgrade (`UP`), simplify (`SIM`), comprehensions/misc (`C4,PIE,RET,ISC`), logging (`LOG,G`), pathlib (`PTH`), datetime-tz (`DTZ`), pandas-vet (`PD`, only if pandas is in use), bandit security (`S`). Drop groups that don't apply.
 - **Types — three real options, pick based on what you need:**
   - **`mypy`** — the reference implementation, most compatible with the plugin ecosystem (Pydantic, SQLAlchemy, Django ORM plugins). Still the safest default CI gate.
   - **`pyright`** (Microsoft) — faster and stricter than mypy, no plugin system of its own but excellent inference; it's what powers Pylance in VS Code, so it's the dominant *editor* type checker even on projects that gate CI with mypy.
   - **`ty`** (Astral, Rust, same toolchain family as `ruff`/`uv`) — 10-100x faster than either, but still beta: lower spec conformance than mypy and no plugin system, so it can't yet fully replace mypy on plugin-dependent code. Good for fast local/pre-commit feedback today; reassess as it matures.
   - Running two of the three (fast one locally/pre-commit, `mypy` in CI) is a reasonable middle ground, not overkill.
 - **Dead code and dependency hygiene**: `vulture` finds unreferenced code; `deptry` finds declared-unused or used-undeclared dependencies. Cheap wins on mature projects.
-- **Security**: `ruff --select=S` (bandit-equivalent rules) covers most of what standalone `bandit` catches — eval use, weak crypto, `subprocess(shell=True)`, hardcoded secrets — in the same pass as everything else. Reach for `semgrep` only when a project needs deeper, cross-file dataflow-aware SAST that pattern-based tools can't do.
+- **Security**: `ruff check --select S` (bandit-equivalent rules) covers most of what standalone `bandit` catches — eval use, weak crypto, `subprocess(shell=True)`, hardcoded secrets — in the same pass as everything else. Reach for `semgrep` only when a project needs deeper, cross-file dataflow-aware SAST that pattern-based tools can't do.
 
 ## prek (pre-commit) automation
 
@@ -108,7 +98,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.1
+    rev: v0.17.4
     hooks:
       - id: ruff-format
         types_or: [python, pyi]
@@ -116,41 +106,23 @@ repos:
         args: ["--fix", "--exit-non-zero-on-fix"]
         types_or: [python, pyi]
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.13.0
+  # local, not mirrors-mypy: the mirror runs in an isolated env and can't see project deps
+  - repo: local
     hooks:
       - id: mypy
+        name: mypy
+        entry: uv run mypy .
+        language: system
+        types: [python]
         pass_filenames: false
         require_serial: true
 
-  # Auxiliary files every project accumulates, not just .py — Docker/Markdown/JSON/YAML/spelling
-  - repo: https://github.com/crate-ci/typos
-    rev: v1.47.2
-    hooks:
-      - id: typos
-
-  - repo: https://github.com/hadolint/hadolint
-    rev: v2.14.0
-    hooks:
-      - id: hadolint-docker    # runs via the hadolint Docker image, no local binary needed
-
-  - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.22
-    hooks:
-      - id: rumdl-fmt
-      - id: rumdl
-
-  - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.9.5
-    hooks:
-      - id: prettier
-        types_or: [json, yaml]
+  # + auxiliary hooks (typos, rumdl, prettier, hadolint, gitleaks, actionlint, zizmor): copy the block from `repo-harness`
 ```
 
 - Run via `prek run --files <changed files>` before committing, don't wait for the hook to catch it.
 - Pinned `rev`s rot — run `prek autoupdate` periodically (or after copying this template) rather than hand-tracking versions.
-- Add `sqlfluff` hooks if the project has raw SQL. Keep `pip-audit`/full `mypy` runs in CI rather than every commit if they're too slow to be a comfortable pre-commit gate.
-- Auxiliary hooks belong in the same config: real projects have Dockerfiles, markdown, JSON/YAML, and typos. `typos` catches misspellings with low false positives and supports `_typos.toml` allowlists. `rumdl` owns Markdown format + lint; do not also run prettier on `.md`. Keep prettier scoped to JSON/YAML.
+- Add `sqlfluff` hooks if the project has raw SQL. Keep `uv audit`/full `mypy` runs in CI rather than every commit if they're too slow to be a comfortable pre-commit gate.
 
 ## just — task runner
 
@@ -176,10 +148,17 @@ test *ARGS:
 coverage:
     uv run pytest --cov=src --cov-report=term-missing
 
+# Include integration/slow tests (drops the default -m filter from addopts)
+test-full:
+    uv run pytest -o addopts=""
+
+# Done-gate for humans, agents, and CI
+check: lint test
+
 lint:
     uv run ruff check .
     uv run ruff format --check .
-    uv run ty check   # or `uv run mypy .` — see "types" above
+    uv run mypy .   # same gate as the prek hook; `uvx ty check` for a faster local pass
 
 fmt:
     uv run ruff format .
@@ -188,10 +167,6 @@ fmt:
 
 - For anything that needs to behave the same on a teammate's Windows machine and a Linux CI box: `set dotenv-load` to pick up `.env`, `if os_family() == "windows" { ... } else { ... }` for cross-platform recipe bodies, `[unix]`/`[windows]` recipe attributes when a recipe's body itself differs, `*ARGS` for variadic passthrough args. Reach for these once cross-platform actually matters, not preemptively.
 - Recipes that write output should default to a local dir (`out/`, gitignored) and require an explicit flag/different recipe to hit prod — don't make the convenient default recipe the dangerous one.
-
-## Changelog / release
-
-If commits follow Conventional Commits, derive `CHANGELOG.md` and semver tags with `git-cliff`: `changelog` regenerates, `release` bumps from `feat`/`fix`/`!`, commits/tags, and never pushes. Use commitizen/semantic-release only when commit-time enforcement is the ask.
 
 ## CLI
 
@@ -224,13 +199,13 @@ If commits follow Conventional Commits, derive `CHANGELOG.md` and semver tags wi
 
 ## Testing LLM-generated code
 
-LLM-written code can look plausible while being subtly wrong, and its tests often cover only the happy path it just wrote. Add checks that do not depend on the generator's own judgment:
+Why and when: `repo-harness`. Python tools:
 
-- **Golden-file (snapshot) tests** — pin known-good output (a JSON response, a rendered report, a CLI's output) to a checked-in file; `syrupy` is the standard pytest plugin. Any diff — including a "helpful" refactor that quietly changes output shape — fails loudly and requires explicit re-approval of the new golden file. This is the single highest-leverage guardrail against an agent silently changing behavior while "just cleaning up."
-- **Property-based tests** (`hypothesis`) — generate a wide input space instead of the 2-3 examples a model writes for itself; catches edge cases the generator never had to think about. Especially valuable for parsing/serialization code, where an LLM's own examples are usually well-formed input only.
-- **Fuzzing** (`atheris`, Google's libFuzzer-based fuzzer for Python) for anything parsing untrusted or structured input — same rationale as Go's native fuzzing.
-- **Mutation testing** (`mutmut`, `cosmic-ray`) — deliberately breaks the code under test and checks whether the existing suite actually fails. This directly answers the most common LLM-authored-test failure mode: a test that calls the function and asserts something trivially true, showing full coverage while verifying nothing. Run periodically (it's slow), not on every commit.
-- **End-to-end, against the real artifact** — a test that runs the actually-installed CLI/package via subprocess, not one that imports internal functions directly. Catches wiring bugs (wrong entry point, missing dependency, a config path that only worked in the dev sandbox) that unit tests structurally can't see, and that an agent's own "I ran the tests and they pass" claim doesn't cover.
+- golden/snapshot: `syrupy`
+- property-based: `hypothesis`
+- fuzzing: `atheris`
+- mutation: `mutmut` (periodic, slow)
+- e2e: run the installed CLI via `subprocess`, not internal imports
 
 ## CI / infra / Docker placement
 

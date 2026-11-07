@@ -95,6 +95,7 @@
 - Prefer JSON output (`--json`, `--jq`, `--format json`) over scraping human tables.
 - If a repo has `.codegraph/`, use `codegraph explore` before `rg`/`sed`/`nl` for code understanding, symbols, callers, and data flow.
 - Search exact text with `rg`; search paths with `fd`.
+- Search inside PDFs/docx/archives with `rga`; never extract to grep.
 - Use NUL-safe filename pipelines: `fd -0 ... | xargs -0 ...` or `rg -l -0 ... | xargs -0 ...`.
 - Replace text in known files with `sd -F 'old' 'new' file...`; discover targets with `rg -F -l -0 'old' | xargs -0 sd -F 'old' 'new'`.
 - Rewrite code structurally with `ast-grep run -p 'foo($A)' -r 'bar($A)' --lang <lang> -U`.

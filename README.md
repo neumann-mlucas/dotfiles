@@ -30,7 +30,9 @@ Flags:
 | `dot-gitconfig` | `~/.gitconfig` | |
 | `dot-zshenv` | `~/.zshenv` | sets `ZDOTDIR=~/.config/zsh` |
 | `dot-ssh/` | `~/.ssh/` | placeholder |
-| `agents/` | — | agent rules + local skills |
+| `dot-claude/` | `~/.claude/` | `CLAUDE.md` + per-skill links → `agents/` |
+| `dot-codex/` | `~/.codex/` | `AGENTS.md` link → `agents/` |
+| `agents/` | — (not stowed) | shared `AGENTS.md` + skills; reached only via `dot-claude/`, `dot-codex/` links |
 
 ## Local overrides
 
@@ -43,8 +45,13 @@ there — never commit it:
 
 ## Stow ignores
 
-`.stow-local-ignore` excludes `README.md` and itself. Stow already ignores
-`.git/` and `.gitignore`.
+`.stow-local-ignore` replaces stow's default list, so it re-declares the
+defaults, then excludes repo-only files: `README.*`, `LICENSE`, `.github/`,
+`.pre-commit-config.yaml`, `.typos.toml`, `stylua.toml`, `agents/`, and itself.
+
+Skills: add a link per skill, `dot-claude/skills/<name> -> ../../agents/skills/<name>`.
+Never link the whole `skills/` dir: `--no-folding` merges it into
+`~/.claude/skills` (which holds non-stowed skills) as real dirs.
 
 ## Software
 
@@ -63,27 +70,32 @@ provisioning lives in `~/.ansible`; macOS installs via Homebrew.
 
 | Category | Packages |
 | --- | --- |
-| Replacements/viewers | `bat`, `eza`, `erdtree`, `ripgrep`, `fd`, `git-delta`, `difftastic`, `dust`, `duf`, `bottom`, `viddy`, `glow`, `tealdeer` |
-| Data/docs | `duckdb`, `jq`, `yq`, `visidata`, `chafa`, `poppler`, `zathura`, `Foliate` |
-| Utilities | `tokei`, `hyperfine`, `just`, `sd`, `ast-grep`, `tree-sitter-cli`, `typos`, `ctags`, `gping`, `socat`, `7zip`, `zip` |
+| Replacements/viewers | `bat`, `eza`, `erdtree`, `ripgrep`, `fd`, `git-delta`, `difftastic`, `dust`, `duf`, `bottom`, `glow`, `tealdeer` |
+| Data/docs | `duckdb`, `jq`, `yq` (mikefarah; Arch pkg `go-yq` — Arch `yq` is the Python jq wrapper), `visidata`, `chafa`, `poppler`, `zathura`, `Foliate` |
+| Utilities | `tokei`, `hyperfine`, `just`, `sd`, `ast-grep`, `tree-sitter-cli`, `typos`, `ctags`, `gping`, `socat`, `7zip`, `zip`, `atuin`, `choose`, `procs`, `ripgrep-all`, `sdcv` |
 
 ### Dev
 
 | Category | Packages |
 | --- | --- |
-| Languages | `go`, `rust`, `nodejs`, `pnpm`, `python`, `lua`, `luarocks`, `julia` |
-| Python | `uv`, `ruff`, `prek` |
-| Go tooling | `go-tools`, `gofumpt`, `golangci-lint`, `govulncheck` |
+| Languages | `go`, `rust` (Arch pkg, not rustup), `nodejs`, `pnpm`, `python`, `lua`, `luarocks`, `julia`, `ruby` |
+| Python | `uv`, `ruff`, `ty`, `pyright` |
+| Go tooling | `go-tools`, `gopls`, `gofumpt`, `golangci-lint`, `govulncheck` |
+| Rust tooling | `rust-analyzer`, `cargo-nextest`, `cargo-deny`, `cargo-machete`, `cargo-update`, `cargo-mutants` (AUR) |
+| Lua tooling | `lua-language-server` |
+| Checks/CI | `prek` (pre-commit runner), `gitleaks`, `actionlint`, `zizmor` |
 | Shell | `shellcheck`, `shfmt` |
 | Git | `gh`, `lazygit`, `git-cliff` |
-| Containers/infra | `docker`, `docker-buildx`, `docker-compose`, `lazydocker`, `kubectl`, `kubectx`, `k9s`, `argocd` |
-| Build/libs | `libpq`, `base-devel` |
+| Containers/infra | `docker`, `docker-buildx`, `docker-compose`, `lazydocker`, `kubectl`, `kubectx`, `k9s`, `argocd`, `helm`, `aws-cli-v2` |
+| Build/libs | `libpq` (brew; Arch `postgresql-libs`), `base-devel` |
 
 ### Python tools (via `uv tool install`)
 
-Current: `git-sim`, `radon`, `visidata`, `yt-dlp`, `ragwatcher`.
+Current: `git-sim`, `radon`, `visidata`, `yt-dlp` (playbook), `ragwatcher`
+(manual: local checkout, `uv tool install ~/Desktop/Projects/ragwatcher`).
 
-Extend as needed: `ruff`, `mypy`, `pyright`, `pre-commit`, `sqlfluff`.
+Linters/type checkers come from pacman (above), not `uv tool`. Extend as
+needed: `mypy`, `sqlfluff`.
 
 ### Linux desktop (Arch + Hyprland)
 
@@ -93,4 +105,5 @@ Extend as needed: `ruff`, `mypy`, `pyright`, `pre-commit`, `sqlfluff`.
 | Session | `network-manager-applet`, `wireplumber`, `brightnessctl`, `playerctl` |
 | Screen/clipboard | `grim`, `slurp`, `cliphist`, `wl-clipboard` |
 | File/image | `yazi`, `imv` |
-| Apps/media | `firefox`, `newsraft`, `mpv`, `surfraw`, `yt-dlp`, `ollama` |
+| Apps/media | `firefox`, `newsraft`, `mpv`, `surfraw`, `yt-dlp`, `ollama`, `restic`, `task`, `keyd` |
+| Agents | `claude-code` (AUR). `dot-codex/` and OpenCode config are stowed, but neither tool is installed by the playbook |

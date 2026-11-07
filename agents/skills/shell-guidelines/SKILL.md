@@ -96,7 +96,7 @@ Rule: **flags for per-run choices, env vars for ambient session config, secrets 
 - A value reused across many calls (target DB, `--env dev|prod`, base URL) → env var, with a flag override. Common split: secret in env (`API_TOKEN`), variable target as flag (`--env dev|prod`).
 - Secrets/tokens/passwords → env var or a file path, **never** a CLI arg. Args are visible in `ps aux`, `/proc/*/cmdline`, and shell history; env vars set via `export` in a parent shell aren't (though still visible to anything reading `/proc/*/environ` on Linux — a secrets manager, not a bare env var, is the real fix, but it's still strictly better than an arg).
 - Precedence when both exist: flag > env var > config file > built-in default. Document that order once, don't make the caller guess.
-- Don't invent an env var when a flag works: env vars are invisible to `--help`, harder to test, and leak to child processes. Prefer `--token "${TOKEN:-}"` over a bare required env var when practical.
+- Don't invent an env var when a flag works: env vars are invisible to `--help`, harder to test, and leak to child processes. Secrets are the exception: env var or `--token-file PATH`, never `--token VALUE`.
 
 ### Argument granularity
 
@@ -212,17 +212,12 @@ A shell script's callers include humans and agents piping output through `jq` an
 | ---------------------------------- | ------------------------------- | --------------------------------- |
 | CSV/TSV/Parquet query              | `duckdb -c "SELECT ..."`        | `awk`/`cut` field-splitting       |
 | JSON field extraction              | `jq`                            | `grep`/`sed` on JSON              |
-| YAML/TOML field extraction         | `yq`                            | `grep`/`sed`                      |
+| YAML/TOML field extraction         | `yq` (mikefarah; Arch `go-yq`)  | `grep`/`sed`                      |
 | Interactive picker                 | `fzf`                           | hand-rolled menu loop             |
 | Literal/regex replace across files | `sd -F 'x' 'y' file...`; discover with `rg -F -l -0 'x' \| xargs -0 sd -F 'x' 'y'` | `sed -i` |
 | Structural code rewrite            | `ast-grep`                      | multi-line `sed`/regex            |
 | Code/text search                   | `rg`                            | `grep -r`                         |
 | File search                        | `fd`                            | `find`                            |
-| Pretty file preview                | `bat`                           | `cat` with manual highlighting    |
-| Diff rendering                     | `delta`                         | raw `diff`/`git diff` output      |
-| Markdown rendering                 | `glow`                          | raw `cat` of `.md`                |
-| Directory listing                  | `eza`                           | `ls` with manual formatting flags |
-| Disk usage                         | `dust`                          | `du -sh` + manual sort            |
 
 Check `command -v <tool>` before depending on non-core tools; fall back and say so if one is missing.
 
