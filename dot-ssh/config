@@ -1,3 +1,5 @@
+AddKeysToAgent yes
+
 Host homeserver
     HostName 192.168.15.12
     User neumann
