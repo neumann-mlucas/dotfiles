@@ -1,6 +1,6 @@
 ---
 name: repo-harness
-description: Language-agnostic repo harness for humans and coding agents — AGENTS.md, spec dirs, `just check` as the single done-gate, module size, auxiliary prek hooks (typos, rumdl, prettier, hadolint, gitleaks, actionlint, zizmor), git-cliff changelog, guardrails for LLM-written code (golden, property, fuzz, mutation, e2e). Trigger on setting up or auditing a repo's tooling, pre-commit, CI, AGENTS.md, or "how do I verify agent-written code". Language specifics live in python-guidelines, golang-guidelines, shell-guidelines.
+description: Language-agnostic repo harness for humans and coding agents — AGENTS.md, spec dirs, `just check` as the single done-gate, module size, auxiliary prek hooks (typos, rumdl, prettier, hadolint, gitleaks, actionlint, zizmor), git-cliff changelog, guardrails for LLM-written code (golden, property, fuzz, mutation, e2e). Trigger on setting up or auditing a repo's tooling, pre-commit, CI, AGENTS.md, or "how do I verify agent-written code". Language specifics live in python-guidelines, golang-guidelines, rust-guidelines, shell-guidelines.
 ---
 
 # Repo Harness
@@ -19,7 +19,7 @@ What every repo needs regardless of language: guides the agent reads before acti
 ## One done-gate: `just check`
 
 - Every repo exposes `just check`: lint + format check + tests (+ vuln scan where cheap). Exit 0 = done. Same command for humans, agents, prek, and CI.
-- Language recipes: `python-guidelines`, `golang-guidelines`. Rust: `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo nextest run`.
+- Language recipes: `python-guidelines`, `golang-guidelines`, `rust-guidelines`.
 - Keep it fast enough to run every change; move slow checks (mutation, full fuzz, network audits) to separate recipes run in CI or on demand.
 
 ## Module size (agent economics)
@@ -99,4 +99,4 @@ LLM code can look plausible while subtly wrong, and its own tests usually cover 
 - **End-to-end against the real artifact** — run the installed CLI / compiled binary, not internal functions. Catches wiring bugs unit tests can't see and that "tests pass" claims don't cover.
 - **Recurring agent mistake → custom lint rule** (`ast-grep` rule in `sgconfig.yml`, ruff/golangci config), not another AGENTS.md line.
 
-Per-language tools: `python-guidelines`, `golang-guidelines`; shell golden files: `shell-guidelines`. Rust: `insta` (snapshots), `proptest`, `cargo fuzz`, `cargo-mutants`.
+Per-language tools: `python-guidelines`, `golang-guidelines`; shell golden files: `shell-guidelines`. Rust: `rust-guidelines`.
