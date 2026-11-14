@@ -58,11 +58,10 @@ Reproduce → isolate → root cause → patch minimal surface → test → veri
 
 ## Git Worktrees
 
-- Branch work goes in a worktree: `WT_NO_CD=1 wt <prefix>/<slug>` prints its path (slug `a-z0-9-`; base comes from the prefix, never pass HEAD). Details: `wt --help`.
+- Branch work goes in a worktree (worktrunk): `wt switch --create <prefix>/<slug> --no-cd` (follow Conventional Branch: prefix `feature/ feat/ bugfix/ fix/ hotfix/ release/ chore/`; slug `a-z0-9-`). Base defaults to default branch; repo with `origin/develop` → add `--base develop` unless `hotfix/`/`release/`. Never base on HEAD. Details: `wt switch --help`.
 - Ask which prefix when the task doesn't name or imply one.
-- Work only inside own worktree; never edit another worktree or the hub. Path via `wt path <branch>`, never constructed.
-- Remove with `wt rm <branch>`. `wt rm --force`, `wt cleanup`, `sync_repositories` are the user's call — ask first.
-- Ticket-style branches (uppercase/underscore) fail in `wt`; ask the user.
+- Work only inside own worktree; never edit another worktree or the hub. Path via `wt list --format json | jq -r '.items[] | select(.branch=="<branch>") | .worktree.path'`, never constructed.
+- Remove with `wt remove <branch>`. `wt remove -f/-D`, `wt step prune`, `sync_repositories` are the user's call — ask first.
 - Indexed repo: run `codegraph sync` in the worktree after edits, before `codegraph explore`.
 - Hooks block `git checkout`/`switch` in the hub and raw `git worktree add|remove`.
 

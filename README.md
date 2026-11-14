@@ -23,7 +23,7 @@ Flags:
 
 | Path | Target | Notes |
 | --- | --- | --- |
-| `dot-config/` | `~/.config/` | `nvim`, `zsh`, `ghostty`, `newsraft` |
+| `dot-config/` | `~/.config/` | `nvim`, `zsh`, `ghostty`, `newsraft`, `worktrunk` |
 | `dot-local/bin/` | `~/.local/bin/` | user scripts |
 | `dot-vim/` | `~/.vim/` | rescue vim config |
 | `dot-bashrc` | `~/.bashrc` | rescue shell fallback |
@@ -85,7 +85,7 @@ provisioning lives in `~/.ansible`; macOS installs via Homebrew.
 | Lua tooling | `lua-language-server` |
 | Checks/CI | `prek` (pre-commit runner), `gitleaks`, `actionlint`, `zizmor` |
 | Shell | `shellcheck`, `shfmt` |
-| Git | `gh`, `lazygit`, `git-cliff` |
+| Git | `gh`, `lazygit`, `git-cliff`, `worktrunk` (`wt`; agent worktrees, setup hooks in `dot-config/worktrunk/`) |
 | Containers/infra | `docker`, `docker-buildx`, `docker-compose`, `lazydocker`, `kubectl`, `kubectx`, `k9s`, `argocd`, `helm`, `aws-cli-v2` |
 | Build/libs | `libpq` (brew; Arch `postgresql-libs`), `base-devel` |
 

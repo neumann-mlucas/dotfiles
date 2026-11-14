@@ -20,10 +20,10 @@ has() { rg -q -- "$1" <<<"$cmd"; }
 S='(^|[;&|(`]\s*|\$\(\s*)'
 
 has "${S}git\s+worktree\s+(add|remove)\b" &&
-  deny 'raw git worktree. Use `WT_NO_CD=1 wt <prefix>/<slug>` / `wt rm <branch>`.'
+  deny 'raw git worktree. Use `wt switch --create <prefix>/<slug> --no-cd` / `wt remove <branch>`.'
 
-has "${S}wt\s+(rm\s+(.*\s)?(--force|-f)\b|cleanup\b)" &&
-  ask 'wt rm --force / wt cleanup delete worktrees irrecoverably.'
+has "${S}wt\s+(remove\s+(.*\s)?(-[a-zA-Z]*[fD]|--force|--force-delete)\b|step\s+prune\b)" &&
+  ask 'wt remove -f/-D / wt step prune delete worktrees or branches irrecoverably.'
 
 has '\s--no-verify\b' &&
   deny '--no-verify skips hooks. Fix what the hook reports instead.'
@@ -47,7 +47,7 @@ if has "${S}git\s+(checkout|switch)\b" && ! has 'git\s+checkout\s+--\s'; then
   if dirs=$(git -C "${cwd:-$PWD}" rev-parse --path-format=absolute --git-dir --git-common-dir 2>/dev/null); then
     { read -r gitdir; read -r common; } <<<"$dirs"
     [[ $gitdir == "$common" ]] &&
-      deny 'git checkout/switch in a main checkout (shared hub). Use `WT_NO_CD=1 wt <prefix>/<slug>`.'
+      deny 'git checkout/switch in a main checkout (shared hub). Use `wt switch --create <prefix>/<slug> --no-cd`.'
   fi
 fi
 

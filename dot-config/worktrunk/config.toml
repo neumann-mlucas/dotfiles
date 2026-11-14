@@ -1,0 +1,19 @@
+# worktrunk user config. Defaults: `wt config create --help`.
+# Replaces the old ~/.local/bin/wt setup steps for every new worktree.
+
+worktree-path = "~/worktrees/{{ repo }}/{{ branch | sanitize }}"
+
+[[pre-start]]
+copy = """
+# Local-only files git doesn't carry over. Never overwrite what the branch has.
+for f in .env .envrc .pre-commit-config.yaml .tool-versions .nvmrc \
+  .claude/settings.local.json .codex/config.toml; do
+  src='{{ primary_worktree_path }}'/"$f"
+  [ -f "$src" ] && [ ! -e "$f" ] && mkdir -p "$(dirname "$f")" && cp "$src" "$f"
+done; true
+"""
+
+[[pre-start]]
+direnv = "[ -f .envrc ] && command -v direnv >/dev/null && direnv allow || true"
+prek = "[ -f .pre-commit-config.yaml ] && command -v prek >/dev/null && prek install || true"
+codegraph = "[ -d '{{ primary_worktree_path }}/.codegraph' ] && command -v codegraph >/dev/null && codegraph init . || true"

@@ -105,6 +105,7 @@ eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
 eval "$(atuin init zsh)"
+command -v wt >/dev/null && eval "$(wt config shell init zsh)"
 
 #-------------------------------------------------------------------------------
 # ALIASES + FUNCTIONS

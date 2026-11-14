@@ -36,10 +36,13 @@ done <<'EOF'
 0|hub|git checkout -- README.md
 2|hub|cd x && git switch -c foo
 2|hub|git worktree add ../x
-0|hub|WT_NO_CD=1 wt chore/x
-ask|hub|wt rm --force chore/x
-ask|hub|wt cleanup
-0|hub|wt rm chore/x
+0|hub|wt switch --create chore/x --no-cd
+ask|hub|wt remove --force chore/x
+ask|hub|wt remove -D chore/x
+ask|hub|wt remove chore/x --force-delete
+ask|hub|wt step prune
+0|hub|wt remove chore/x
+0|hub|wt remove --foreground chore/x
 2|hub|git commit --no-verify -m x
 2|hub|sed -i s/a/b/ f
 0|hub|sed -n 1,5p f
