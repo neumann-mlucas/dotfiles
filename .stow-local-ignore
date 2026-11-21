@@ -34,5 +34,5 @@ _darcs
 ^/\.github$
 ^/\.pre-commit-config\.yaml$
 ^/\.stow-local-ignore$
-^/\.typos\.toml$
+^/setup$
 ^/stylua\.toml$

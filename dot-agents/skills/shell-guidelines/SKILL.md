@@ -162,7 +162,7 @@ esac
 
 - `shellcheck script.sh` before calling anything done. Fix every warning or justify inline: `# shellcheck disable=SC2086  # word-splitting intentional here` — the directive needs its own line or a `#`-separated trailing comment; `--` after the code (`disable=SC2086 -- reason`) is invalid directive syntax and shellcheck will error on it. No blanket disables.
 - Wire `shellcheck` into pre-commit/`prek` so it runs on every commit rather than relying on someone remembering to run it by hand — pair with `check-executables-have-shebangs`/`check-shebang-scripts-are-executable` from `pre-commit-hooks` (catches a script missing its shebang or its `chmod +x`). Run `prek run --files <script>` locally before committing, don't wait on the hook to find out.
-- `shfmt` for formatting.
+- Format with `shfmt -w -i 2` as a local prek hook (`language: system`, `types_or: [bash, sh]` — never zsh, shfmt cannot parse it).
 
 ## CLI UX — design for human AND agent callers
 

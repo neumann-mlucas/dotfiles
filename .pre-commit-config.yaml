@@ -22,19 +22,18 @@ repos:
       - id: stylua
         files: \.lua$
 
-  - repo: https://github.com/crate-ci/typos
-    rev: v1.49.0
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
     hooks:
-      - id: typos
+      - id: gitleaks
 
   - repo: local
     hooks:
-      - id: typos-commit-msg
-        name: typos commit message
-        entry: bash -c 'awk "/^diff --git / { exit } { print }" "$1" | typos -' --
+      - id: shfmt
+        name: shfmt
+        entry: shfmt -w -i 2
         language: system
-        stages: [commit-msg]
-        always_run: true
+        types_or: [bash, sh]
       - id: skill-skeleton-shellcheck
         name: shellcheck shell-guidelines skeleton
         # SC2034 expected: skeleton's main() is a stub, vars unused by design

@@ -27,13 +27,11 @@ local M = {
       group = lint_augroup,
       callback = function()
         lint.try_lint()
-        lint.try_lint("typos")
       end,
     })
 
     vim.keymap.set("n", "<leader>ll", function()
       lint.try_lint()
-      lint.try_lint("typos")
     end, { desc = "Trigger linting for current file" })
   end,
 }

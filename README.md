@@ -47,7 +47,7 @@ there — never commit it:
 
 `.stow-local-ignore` replaces stow's default list, so it re-declares the
 defaults, then excludes repo-only files: `README.*`, `LICENSE`, `.github/`,
-`.pre-commit-config.yaml`, `.typos.toml`, `stylua.toml`, tool caches, and itself.
+`.pre-commit-config.yaml`, `stylua.toml`, tool caches, and itself.
 
 Skills: add a link per skill, `dot-claude/skills/<name> -> ../../dot-agents/skills/<name>`.
 Never link the whole `skills/` dir: `--no-folding` merges it into
@@ -72,7 +72,7 @@ provisioning lives in `~/.ansible`; macOS installs via Homebrew.
 | --- | --- |
 | Replacements/viewers | `bat`, `eza`, `erdtree`, `ripgrep`, `fd`, `git-delta`, `difftastic`, `dust`, `duf`, `bottom`, `glow`, `tealdeer` |
 | Data/docs | `duckdb`, `jq`, `yq` (mikefarah; Arch pkg `go-yq` — Arch `yq` is the Python jq wrapper), `visidata`, `chafa`, `poppler`, `zathura`, `Foliate` |
-| Utilities | `tokei`, `hyperfine`, `just`, `sd`, `ast-grep`, `tree-sitter-cli`, `typos`, `ctags`, `gping`, `socat`, `7zip`, `zip`, `atuin`, `choose`, `procs`, `ripgrep-all`, `sdcv` |
+| Utilities | `tokei`, `hyperfine`, `just`, `sd`, `ast-grep`, `tree-sitter-cli`, `ctags`, `gping`, `socat`, `7zip`, `zip`, `atuin`, `choose`, `procs`, `ripgrep-all`, `sdcv` |
 
 ### Dev
 

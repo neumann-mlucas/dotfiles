@@ -117,7 +117,7 @@ repos:
         pass_filenames: false
         require_serial: true
 
-  # + auxiliary hooks (typos, rumdl, prettier, hadolint, gitleaks, actionlint, zizmor): copy the block from `repo-harness`
+  # + auxiliary hooks (rumdl, prettier, hadolint, gitleaks, actionlint, zizmor): copy the block from `repo-harness`
 ```
 
 - Run via `prek run --files <changed files>` before committing, don't wait for the hook to catch it.

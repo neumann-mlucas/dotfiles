@@ -1,6 +1,6 @@
 ---
 name: repo-harness
-description: Language-agnostic repo harness for humans and coding agents — AGENTS.md, spec dirs, `just check` as the single done-gate, module size, auxiliary prek hooks (typos, rumdl, prettier, hadolint, gitleaks, actionlint, zizmor), git-cliff changelog, guardrails for LLM-written code (golden, property, fuzz, mutation, e2e). Trigger on setting up or auditing a repo's tooling, pre-commit, CI, AGENTS.md, or "how do I verify agent-written code". Language specifics live in python-guidelines, golang-guidelines, rust-guidelines, shell-guidelines.
+description: Language-agnostic repo harness for humans and coding agents — AGENTS.md, spec dirs, `just check` as the single done-gate, module size, auxiliary prek hooks (rumdl, prettier, hadolint, gitleaks, actionlint, zizmor), git-cliff changelog, guardrails for LLM-written code (golden, property, fuzz, mutation, e2e). Trigger on setting up or auditing a repo's tooling, pre-commit, CI, AGENTS.md, or "how do I verify agent-written code". Language specifics live in python-guidelines, golang-guidelines, rust-guidelines, shell-guidelines.
 ---
 
 # Repo Harness
@@ -28,7 +28,7 @@ Agents pay input tokens to read context: the same change costs ~6× more in a mo
 
 ## Auxiliary prek hooks
 
-Every repo accumulates Markdown, JSON/YAML, Dockerfiles, workflows, and typos. Append to the language hooks:
+Every repo accumulates Markdown, JSON/YAML, Dockerfiles, and workflows. Append to the language hooks:
 
 ```yaml
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -39,11 +39,6 @@ Every repo accumulates Markdown, JSON/YAML, Dockerfiles, workflows, and typos. A
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
-
-  - repo: https://github.com/crate-ci/typos
-    rev: v1.52.0
-    hooks:
-      - id: typos
 
   - repo: https://github.com/rvben/rumdl-pre-commit
     rev: v0.3.2
@@ -79,7 +74,7 @@ Every repo accumulates Markdown, JSON/YAML, Dockerfiles, workflows, and typos. A
       - id: zizmor
 ```
 
-- `typos`: low false positives, `_typos.toml` allowlist. `rumdl` owns Markdown format + lint; prettier stays scoped to JSON/YAML.
+- `rumdl` owns Markdown format + lint; prettier stays scoped to JSON/YAML.
 - `gitleaks`: secrets before they reach history. `actionlint`: workflow syntax/expressions. `zizmor`: workflow security (injection, over-broad permissions, unpinned actions).
 - Pinned `rev`s rot — run `prek autoupdate` after copying this, and periodically.
 - Run `prek run --files <changed>` before committing; don't wait for the hook.

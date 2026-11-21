@@ -151,7 +151,7 @@ repos:
         pass_filenames: false
         files: 'go\.(mod|sum)$'
 
-  # + auxiliary hooks (typos, rumdl, prettier, hadolint, gitleaks, actionlint, zizmor): copy the block from `repo-harness`
+  # + auxiliary hooks (rumdl, prettier, hadolint, gitleaks, actionlint, zizmor): copy the block from `repo-harness`
 ```
 
 Pinned `rev`s rot — run `prek autoupdate` periodically (or after copying this template) rather than hand-tracking versions. Keep `go test ./...` and `govulncheck` out of the commit hook if they're slow (fuzz/integration tests, a network call to the vuln database) — run them in CI or a pre-push hook instead, so commits stay fast.
