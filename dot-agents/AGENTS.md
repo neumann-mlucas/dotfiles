@@ -140,3 +140,8 @@ Ousterhout, *A Philosophy of Software Design*. Complexity = dependencies + obscu
 - Check shell scripts with `shellcheck script.sh`; never debug non-trivial shell by inspection only.
 - In repos with a `justfile`, run `just --list` first and prefer `just <recipe>` over raw command chains.
 - Benchmark with `hyperfine 'cmd'`; never hand-roll timing loops.
+- Count code size with `tokei`; never `wc -l` over sources.
+- Command examples → `tldr <cmd>` before web search.
+- Changelog → `git-cliff`, never hand-written.
+- PDF output → write Typst, build with `typst compile`. Extract text with `pdftotext`; merge/split with `pdftk`.
+- Language toolchains (uv/ruff/ty, gofumpt/golangci-lint, cargo-*, shellcheck/shfmt) → load the `<lang>-guidelines` skill.
