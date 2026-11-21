@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# Install the Claude Code and Codex state that stow cannot link:
+# config files, plugins, the MCP server, and third-party skills.
+# The script is idempotent. It never overwrites an existing config file.
+set -Eeuo pipefail
+
+dotfiles="${DOTFILES:-$HOME/.dotfiles}"
+plugins=(gopls-lsp rust-analyzer-lsp pyright-lsp lua-lsp)
+# Each entry is "<source repo>:<skill name>".
+skills=(
+  danyuchn/asd-ste100-skill:asd-ste100
+  vercel-labs/skills:find-skills
+  lucifer1004/claude-skill-typst:typst
+)
+
+log() { printf 'agents-setup: %s\n' "$*" >&2; }
+have() { command -v "$1" >/dev/null; }
+
+# Copy the repo template to the live path only if the live file is missing.
+# Claude Code and Codex rewrite these files, so a stow link would break.
+install_config() {
+  local src=$1 dst=$2
+  if [[ -e $dst ]]; then
+    log "kept $dst (compare: diff $dst $src)"
+    return
+  fi
+  mkdir -p "$(dirname "$dst")"
+  cp "$src" "$dst"
+  log "created $dst"
+}
+
+plugin_installed() {
+  local manifest=$HOME/.claude/plugins/installed_plugins.json
+  [[ -f $manifest ]] && jq -e --arg p "$1" '.plugins[$p]' "$manifest" >/dev/null
+}
+
+setup_claude() {
+  local name id
+  for name in "${plugins[@]}"; do
+    id=$name@claude-plugins-official
+    plugin_installed "$id" || claude plugin install --scope user "$id"
+  done
+
+  if have codegraph && ! claude mcp get codegraph >/dev/null 2>&1; then
+    claude mcp add --scope user codegraph -- codegraph serve --mcp
+  fi
+}
+
+# Install each skill to ~/.agents/skills, then link it for Claude Code.
+# Claude Code does not read ~/.agents/skills.
+setup_skills() {
+  local entry repo name link
+  mkdir -p "$HOME/.claude/skills"
+  for entry in "${skills[@]}"; do
+    repo=${entry%%:*}
+    name=${entry#*:}
+    if [[ ! -d $HOME/.agents/skills/$name ]]; then
+      npx -y skills add "$repo" --global --skill "$name" --yes
+    fi
+    link=$HOME/.claude/skills/$name
+    [[ -e $link || -L $link ]] || ln -s "$HOME/.agents/skills/$name" "$link"
+  done
+}
+
+main() {
+  have jq || {
+    log "jq is required"
+    exit 1
+  }
+  [[ -d $dotfiles/setup ]] || {
+    log "missing $dotfiles/setup (set DOTFILES)"
+    exit 1
+  }
+
+  install_config "$dotfiles/setup/claude-settings.json" "$HOME/.claude/settings.json"
+  if have claude; then setup_claude; else log "claude not found, skipped Claude Code"; fi
+  install_config "$dotfiles/setup/codex-config.toml" "$HOME/.codex/config.toml"
+  if have npx; then setup_skills; else log "npx not found, skipped skills"; fi
+}
+
+main "$@"
