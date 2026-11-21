@@ -1,0 +1,36 @@
+# Taskwarrior 3.x house config, stowed from ~/.dotfiles.
+# The live ~/.config/task/taskrc is a local file that includes this one,
+# because `task context` and `task config` write to the main taskrc.
+# Docs: man taskrc
+
+data.location=~/.local/share/task
+weekstart=Monday
+search.case.sensitive=0
+# A write command with no filter is an error, not a prompt.
+allow.empty.filter=0
+
+# Areas live in the project tree: work.<client>, dev.<repo>, home.
+context.work.read=project:work
+context.work.write=project:work
+context.personal.read=project.not:work
+
+# Links a task to a code checkout, for agent handoff.
+uda.repo.type=string
+uda.repo.label=Repo
+
+# Inbox: captured tasks that still need a project, a date, or deletion.
+report.inbox.description=Untriaged tasks (+in)
+report.inbox.filter=status:pending -WAITING +in
+report.inbox.columns=id,entry.age,description
+report.inbox.labels=ID,Age,Description
+report.inbox.sort=entry+
+
+# Errands: things to do while out, ready now.
+report.errands.description=Errands and calls, ready now
+report.errands.filter=status:pending -WAITING (+errand or +call)
+report.errands.columns=id,due.relative,tags,description
+report.errands.labels=ID,Due,Tags,Description
+report.errands.sort=due+,urgency-
+
+# Inbox items stay visible but never outrank real work.
+urgency.user.tag.in.coefficient=-2.0
