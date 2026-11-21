@@ -143,5 +143,6 @@ Ousterhout, *A Philosophy of Software Design*. Complexity = dependencies + obscu
 - Count code size with `tokei`; never `wc -l` over sources.
 - Command examples → `tldr <cmd>` before web search.
 - Changelog → `git-cliff`, never hand-written.
-- PDF output → write Typst, build with `typst compile`. Extract text with `pdftotext`; merge/split with `pdftk`.
+- PDF output → load the `typst-notes` skill (house template). Build with `typst compile`. Extract text with `pdftotext`; merge/split with `pdftk`.
+- After building a PDF → render with `pdftoppm -png -r 80 <file>.pdf /tmp/page`, read the pages, fix layout before claiming done.
 - Language toolchains (uv/ruff/ty, gofumpt/golangci-lint, cargo-*, shellcheck/shfmt) → load the `<lang>-guidelines` skill.
