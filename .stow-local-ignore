@@ -30,9 +30,9 @@ _darcs
 ^/LICENSE$
 \.mypy_cache
 \.rumdl_cache
+\.ruff_cache
 ^/\.github$
 ^/\.pre-commit-config\.yaml$
 ^/\.stow-local-ignore$
 ^/\.typos\.toml$
-^/agents$
 ^/stylua\.toml$
