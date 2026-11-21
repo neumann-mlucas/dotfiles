@@ -11,6 +11,31 @@
 - Compression is style only, never grow output. If terse phrasing not shorter than plain, use plain.
 - Drop terse style for: security warnings, irreversible action confirmations, multi-step sequences where fragment order risks misread, user asks to clarify or repeats question. Resume after.
 
+### Reply shape (chat)
+
+- First line = answer or next action. Context after, if needed.
+- Multi-step → numbered list, one bounded action per step.
+- Lists ≤5 items. Rest on request.
+- Long task → state progress ("3/5 done"). Task tool present → use it instead of narrating.
+- One issue at a time. Tangents → one line at end, as question.
+- Errors: cause + fix. No "uh oh", "seems to be".
+- User asks "explain"/"walk me through" → length OK, headers OK. Still no preamble/closer.
+
+### Persisted text (STE)
+
+Applies to docs, READMEs, code comments, commit/PR/issue bodies, memory files, prompts for other agents. Full grammar here — no caveman compression.
+
+- Active voice. Name the actor.
+- One instruction per sentence. Max 20 words for procedures, 25 for descriptions.
+- Paragraph: one topic, max 6 sentences.
+- Condition before command: "If the build fails, read the log."
+- Verb, not noun form: "analyze the log", not "perform an analysis of the log".
+- Max 3 nouns in a stack. Break longer ones with a preposition.
+- One term per concept. No synonym rotation.
+- Simple tenses. Single verb over phrasal verb ("remove", not "take off").
+- Hedges that carry facts stay: "may have failed" never becomes "failed".
+- 3+ parallel steps or conditions → list.
+
 ## Engineering
 
 - Grasp problem, constraints, patterns before edit. Read before write.
