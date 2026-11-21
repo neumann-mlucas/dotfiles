@@ -8,7 +8,10 @@ input=$(cat)
 cmd=$(jq -r '.tool_input.command // ""' <<<"$input")
 cwd=$(jq -r '.cwd // empty' <<<"$input")
 
-deny() { printf 'Blocked by guard-bash: %s\n' "$1" >&2; exit 2; }
+deny() {
+  printf 'Blocked by guard-bash: %s\n' "$1" >&2
+  exit 2
+}
 ask() {
   jq -n --arg r "$1" '{hookSpecificOutput: {hookEventName: "PreToolUse",
     permissionDecision: "ask", permissionDecisionReason: $r}}'
@@ -45,7 +48,10 @@ has '(\.ssh/id_[a-z0-9_]+|\.claude/\.credentials\.json|galaxy_token)\b' &&
 # ponytail: judged by the hook's cwd, so `cd other && git checkout` is checked against cwd.
 if has "${S}git\s+(checkout|switch)\b" && ! has 'git\s+checkout\s+--\s'; then
   if dirs=$(git -C "${cwd:-$PWD}" rev-parse --path-format=absolute --git-dir --git-common-dir 2>/dev/null); then
-    { read -r gitdir; read -r common; } <<<"$dirs"
+    {
+      read -r gitdir
+      read -r common
+    } <<<"$dirs"
     [[ $gitdir == "$common" ]] &&
       deny 'git checkout/switch in a main checkout (shared hub). Use `wt switch --create <prefix>/<slug> --no-cd`.'
   fi

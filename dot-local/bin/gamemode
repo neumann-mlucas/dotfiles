@@ -2,8 +2,8 @@
 set -eu
 
 HYPRGAMEMODE=$(hyprctl -j getoption animations.enabled | jq -r '.bool')
-if [ "$HYPRGAMEMODE" = "true" ] ; then
-    hyprctl eval 'hl.config({
+if [ "$HYPRGAMEMODE" = "true" ]; then
+  hyprctl eval 'hl.config({
         animations = { enabled = false },
         decoration = {
             shadow = { enabled = false },
@@ -12,6 +12,6 @@ if [ "$HYPRGAMEMODE" = "true" ] ; then
         },
         general = { gaps_in = 0, gaps_out = 0, border_size = 1 },
     })'
-    exit
+  exit
 fi
 hyprctl reload

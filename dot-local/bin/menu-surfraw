@@ -7,7 +7,7 @@ set -Eeuo pipefail
 browser="firefox"
 
 usage() {
-	echo "Usage: $0 [OPTIONS] [ELVIS [SEARCHTERM]]
+  echo "Usage: $0 [OPTIONS] [ELVIS [SEARCHTERM]]
 
 OPTIONS:
   -h, --help	Displays this message
@@ -19,7 +19,7 @@ ELVIS:
 SEARCHTERM:
     Again, the same as surfraw, the term you are searching for. Can also be
     left blank as you will be prompted for this in dmenu/rofi."
-	exit
+  exit
 }
 
 case ${1:-} in
@@ -27,13 +27,13 @@ case ${1:-} in
 esac
 
 if ! command -v surfraw >/dev/null; then
-	echo "surfraw not found, exiting." >&2
-	exit 1
+  echo "surfraw not found, exiting." >&2
+  exit 1
 fi
 
 if ! command -v wofi >/dev/null; then
-	echo "wofi not found, exiting." >&2
-	exit 1
+  echo "wofi not found, exiting." >&2
+  exit 1
 fi
 menu=(wofi --dmenu)
 
@@ -41,11 +41,11 @@ elvis="${1:-}"
 searchterm="${*:2}"
 
 if [[ -z "$elvis" ]]; then
-	elvis=$(surfraw -elvi | awk -F'-' '{print $1}' | sed '/:/d' | awk '{$1=$1};1' | "${menu[@]}" -p "web: ")
+  elvis=$(surfraw -elvi | awk -F'-' '{print $1}' | sed '/:/d' | awk '{$1=$1};1' | "${menu[@]}" -p "web: ")
 fi
 
 if [[ -z "$searchterm" ]]; then
-	searchterm=$(echo "" | "${menu[@]}" -p "$elvis ")
+  searchterm=$(echo "" | "${menu[@]}" -p "$elvis ")
 fi
 
 [[ -z "$elvis" || -z "$searchterm" ]] && exit 0

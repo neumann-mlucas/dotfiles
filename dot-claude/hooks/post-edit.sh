@@ -13,7 +13,10 @@ up() {
   local d=$dir stop
   stop=$(git -C "$dir" rev-parse --show-toplevel 2>/dev/null || echo /)
   while :; do
-    for n in "$@"; do [[ -e $d/$n ]] && { printf '%s/%s\n' "$d" "$n"; return 0; }; done
+    for n in "$@"; do [[ -e $d/$n ]] && {
+      printf '%s/%s\n' "$d" "$n"
+      return 0
+    }; done
     [[ $d == "$stop" || $d == / ]] && return 1
     d=$(dirname "$d")
   done
@@ -26,29 +29,29 @@ report() {
 }
 
 case $f in
-  *.rs)
-    ed=2021
-    if cargo_toml=$(up Cargo.toml); then
-      e=$(yq -p toml -oy '.package.edition // .workspace.package.edition // ""' "$cargo_toml" 2>/dev/null)
-      [[ $e =~ ^20[0-9]{2}$ ]] && ed=$e
-    fi
-    command -v rustfmt >/dev/null && rustfmt --edition "$ed" "$f" 2>/dev/null
-    ;;
-  *.go)
-    command -v gofmt >/dev/null && gofmt -w "$f"
-    ;;
-  *.py | *.pyi)
-    cfg=$(up ruff.toml .ruff.toml pyproject.toml) || exit 0
-    [[ $cfg == */pyproject.toml ]] && ! rg -q '^\[tool\.ruff' "$cfg" && exit 0
-    command -v ruff >/dev/null || exit 0
-    ruff format -q "$f"
-    # no --fix, and skip unused-* rules: mid-edit an import may be used by the next edit
-    report ruff "$(ruff check -q --ignore F401,F841 --output-format concise "$f" 2>&1)"
-    ;;
-  *)
-    if [[ $f == *.sh || $f == *.bash ]] || head -1 "$f" | rg -q '^#!.*\b(bash|sh)\b'; then
-      command -v shellcheck >/dev/null && report shellcheck "$(shellcheck -f gcc "$f" 2>&1)"
-    fi
-    ;;
+*.rs)
+  ed=2021
+  if cargo_toml=$(up Cargo.toml); then
+    e=$(yq -p toml -oy '.package.edition // .workspace.package.edition // ""' "$cargo_toml" 2>/dev/null)
+    [[ $e =~ ^20[0-9]{2}$ ]] && ed=$e
+  fi
+  command -v rustfmt >/dev/null && rustfmt --edition "$ed" "$f" 2>/dev/null
+  ;;
+*.go)
+  command -v gofmt >/dev/null && gofmt -w "$f"
+  ;;
+*.py | *.pyi)
+  cfg=$(up ruff.toml .ruff.toml pyproject.toml) || exit 0
+  [[ $cfg == */pyproject.toml ]] && ! rg -q '^\[tool\.ruff' "$cfg" && exit 0
+  command -v ruff >/dev/null || exit 0
+  ruff format -q "$f"
+  # no --fix, and skip unused-* rules: mid-edit an import may be used by the next edit
+  report ruff "$(ruff check -q --ignore F401,F841 --output-format concise "$f" 2>&1)"
+  ;;
+*)
+  if [[ $f == *.sh || $f == *.bash ]] || head -1 "$f" | rg -q '^#!.*\b(bash|sh)\b'; then
+    command -v shellcheck >/dev/null && report shellcheck "$(shellcheck -f gcc "$f" 2>&1)"
+  fi
+  ;;
 esac
 exit 0

@@ -13,7 +13,10 @@ trap 'rm -rf "$tmp"' EXIT
 fail=0
 
 check() { # check <name> <expected> <got>
-  if [[ $2 == "$3" ]]; then printf 'PASS %s\n' "$1"; else printf 'FAIL %s: want %s got %s\n' "$1" "$2" "$3"; fail=1; fi
+  if [[ $2 == "$3" ]]; then printf 'PASS %s\n' "$1"; else
+    printf 'FAIL %s: want %s got %s\n' "$1" "$2" "$3"
+    fail=1
+  fi
 }
 
 # --- guard-bash -----------------------------------------------------------
@@ -28,7 +31,8 @@ guard() { # guard <cwd> <command> -> 0 | 2 | ask
 }
 while IFS='|' read -r want where c; do
   [[ -z $want ]] && continue
-  d=$tmp/hub; [[ $where == wt ]] && d=$tmp/wt
+  d=$tmp/hub
+  [[ $where == wt ]] && d=$tmp/wt
   check "guard: $c" "$want" "$(guard "$d" "$c")"
 done <<'EOF'
 2|hub|git checkout main
@@ -55,7 +59,10 @@ ask|hub|wt step prune
 EOF
 
 # --- post-edit ------------------------------------------------------------
-edit() { jq -n --arg f "$1" '{tool_input:{file_path:$f}}' | "$H/post-edit.sh" >/dev/null 2>&1; printf '%s' $?; }
+edit() {
+  jq -n --arg f "$1" '{tool_input:{file_path:$f}}' | "$H/post-edit.sh" >/dev/null 2>&1
+  printf '%s' $?
+}
 
 mkdir -p "$tmp/rs/src" && printf '[package]\nname="x"\nversion="0.1.0"\nedition="2024"\n' >"$tmp/rs/Cargo.toml"
 printf 'fn  main( ){let x=1;}\n' >"$tmp/rs/src/main.rs"
@@ -79,7 +86,10 @@ check 'post-edit: clean shell passes' 0 "$(edit "$tmp/ok.sh")"
 # --- stop-check -----------------------------------------------------------
 git -C "$tmp" init -q proj
 printf 'check:\n    exit 1\n' >"$tmp/proj/justfile"
-stop() { jq -n --arg d "$1" --argjson a "$2" '{cwd:$d,stop_hook_active:$a}' | "$H/stop-check.sh" >/dev/null 2>&1; printf '%s' $?; }
+stop() {
+  jq -n --arg d "$1" --argjson a "$2" '{cwd:$d,stop_hook_active:$a}' | "$H/stop-check.sh" >/dev/null 2>&1
+  printf '%s' $?
+}
 check 'stop: failing check blocks' 2 "$(stop "$tmp/proj" false)"
 check 'stop: second attempt allowed' 0 "$(stop "$tmp/proj" true)"
 printf 'check:\n    true\n' >"$tmp/proj/justfile"
