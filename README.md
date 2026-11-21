@@ -53,6 +53,26 @@ Skills: add a link per skill, `dot-claude/skills/<name> -> ../../dot-agents/skil
 Never link the whole `skills/` dir: `--no-folding` merges it into
 `~/.claude/skills` (which holds non-stowed skills) as real dirs.
 
+## Commits
+
+This repo does not use Conventional Commits types (`feat:`, `docs(...)`).
+Each subject is one line: `<area>: <summary>`, in lowercase imperative mood.
+
+| Area | Paths |
+|---|---|
+| `ai` | `dot-agents/`, `dot-claude/`, `dot-codex/`, `setup/`, `agents-setup` |
+| `shell` | `dot-config/zsh/`, `dot-zshenv`, `dot-bashrc`, `dot-local/bin/` scripts |
+| `vim` | `dot-config/nvim/`, `dot-vim/` |
+| `wm` | `dot-config/hypr/`, `waybar/`, `wofi/`, `mako/` |
+| `fm` | `dot-config/yazi/` |
+| `terminal` | `dot-config/ghostty/` |
+| `rss` | `dot-config/newsraft/` |
+| `git` | `dot-gitconfig`, `dot-gitignore_global` |
+| `ssh` | `dot-ssh/` |
+| `chore` | Repo tooling, plugin bumps, changes across many areas |
+
+For a new tool, use its config directory name as the area. Example: `task`.
+
 ## Software
 
 Inventory across hosts. Not every item is required on every host. Linux
