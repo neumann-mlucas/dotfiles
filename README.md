@@ -30,9 +30,9 @@ Flags:
 | `dot-gitconfig` | `~/.gitconfig` | |
 | `dot-zshenv` | `~/.zshenv` | sets `ZDOTDIR=~/.config/zsh` |
 | `dot-ssh/` | `~/.ssh/` | placeholder |
-| `dot-claude/` | `~/.claude/` | `CLAUDE.md` + per-skill links → `agents/` |
-| `dot-codex/` | `~/.codex/` | `AGENTS.md` link → `agents/` |
-| `agents/` | — (not stowed) | shared `AGENTS.md` + skills; reached only via `dot-claude/`, `dot-codex/` links |
+| `dot-agents/` | `~/.agents/` | shared `AGENTS.md` + skills (cross-tool location) |
+| `dot-claude/` | `~/.claude/` | `CLAUDE.md` + per-skill links → `dot-agents/` (Claude ignores `~/.agents/skills`) |
+| `dot-codex/` | `~/.codex/` | `AGENTS.md` link → `dot-agents/` |
 
 ## Local overrides
 
@@ -47,9 +47,9 @@ there — never commit it:
 
 `.stow-local-ignore` replaces stow's default list, so it re-declares the
 defaults, then excludes repo-only files: `README.*`, `LICENSE`, `.github/`,
-`.pre-commit-config.yaml`, `.typos.toml`, `stylua.toml`, `agents/`, and itself.
+`.pre-commit-config.yaml`, `.typos.toml`, `stylua.toml`, tool caches, and itself.
 
-Skills: add a link per skill, `dot-claude/skills/<name> -> ../../agents/skills/<name>`.
+Skills: add a link per skill, `dot-claude/skills/<name> -> ../../dot-agents/skills/<name>`.
 Never link the whole `skills/` dir: `--no-folding` merges it into
 `~/.claude/skills` (which holds non-stowed skills) as real dirs.
 

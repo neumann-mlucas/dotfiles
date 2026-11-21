@@ -38,9 +38,9 @@ repos:
       - id: skill-skeleton-shellcheck
         name: shellcheck shell-guidelines skeleton
         # SC2034 expected: skeleton's main() is a stub, vars unused by design
-        entry: bash -c 'awk "/^\`\`\`bash$/{f=1;next} /^\`\`\`/{if(f)exit} f" agents/skills/shell-guidelines/SKILL.md | shellcheck -e SC2034 -'
+        entry: bash -c 'awk "/^\`\`\`bash$/{f=1;next} /^\`\`\`/{if(f)exit} f" dot-agents/skills/shell-guidelines/SKILL.md | shellcheck -e SC2034 -'
         language: system
-        files: ^agents/skills/shell-guidelines/SKILL\.md$
+        files: ^dot-agents/skills/shell-guidelines/SKILL\.md$
         pass_filenames: false
       - id: claude-hooks-test
         name: claude code hooks self-test
