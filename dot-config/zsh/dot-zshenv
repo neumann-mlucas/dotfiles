@@ -8,8 +8,6 @@ export PATH="$HOME/.cargo/bin:$PATH"
 # Linux-only paths
 if [[ "$(uname -s)" == "Linux" ]]; then
   export PATH="/var/lib/flatpak/exports/bin:$PATH"
-  export PATH="/var/lib/flatpak/exports/share/applications:$PATH"
-  export XDG_DATA_DIRS="/var/lib/flatpak/exports/share/applications:$XDG_DATA_DIRS"
 fi
 
 export CDPATH=".:$HOME"
