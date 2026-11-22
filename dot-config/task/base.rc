@@ -67,7 +67,7 @@ report.week.sort=due+,urgency-
 
 # Report: bills and money owed, including hidden ones, for the month view.
 report.money.description=Bills and collections, including waiting ones
-report.money.filter=project:home.finance (status:pending or status:waiting)
+report.money.filter=project:home.finance status:pending
 report.money.columns=id,due,recur,tags,description.count
 report.money.labels=ID,Due,Recur,Tags,Description
 report.money.sort=due+
