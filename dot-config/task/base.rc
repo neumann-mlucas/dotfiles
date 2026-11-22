@@ -34,3 +34,47 @@ report.errands.sort=due+,urgency-
 
 # Inbox items stay visible but never outrank real work.
 urgency.user.tag.in.coefficient=-2.0
+
+
+# Brazilian holidays in `task calendar`.
+include /usr/share/doc/task/rc/holidays.pt-BR.rc
+calendar.holidays=sparse
+calendar.details=sparse
+
+# `start` and `stop` add a timestamped annotation, so time spent on a task is visible.
+journal.time=1
+
+# Contexts, next to the existing work and personal ones.
+context.health.read=project:home.health
+context.health.write=project:home.health
+context.money.read=project:home.finance
+context.money.write=project:home.finance
+context.dev.read=project:dev
+context.dev.write=project:dev
+
+# Urgency: health and bills outrank hobby code; low-priority dev ideas sink.
+urgency.user.project.home.health.coefficient=2.0
+urgency.user.project.home.finance.coefficient=2.0
+urgency.user.project.career.coefficient=1.5
+urgency.user.tag.errand.coefficient=0.5
+
+# Report: this week. Anything due or scheduled before next Monday.
+report.week.description=Due or scheduled this week
+report.week.filter=status:pending -WAITING (due.before:sow+7d or scheduled.before:sow+7d)
+report.week.columns=id,due.relative,project,tags,description.count
+report.week.labels=ID,Due,Project,Tags,Description
+report.week.sort=due+,urgency-
+
+# Report: bills and money owed, including hidden ones, for the month view.
+report.money.description=Bills and collections, including waiting ones
+report.money.filter=project:home.finance (status:pending or status:waiting)
+report.money.columns=id,due,recur,tags,description.count
+report.money.labels=ID,Due,Recur,Tags,Description
+report.money.sort=due+
+
+# Report: stale. Pending tasks untouched for 30 days, for the weekly review.
+report.stale.description=Pending tasks not modified in 30 days
+report.stale.filter=status:pending -WAITING modified.before:now-30d
+report.stale.columns=id,modified.age,project,description.count
+report.stale.labels=ID,Untouched,Project,Description
+report.stale.sort=modified+
