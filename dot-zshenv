@@ -1,3 +1,5 @@
+# Also sourced as $ZDOTDIR/.zshenv, so nested shells see it. Keep PATH free of duplicates.
+typeset -U path PATH
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.go/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
