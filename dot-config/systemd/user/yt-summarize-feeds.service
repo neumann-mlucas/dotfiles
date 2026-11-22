@@ -1,0 +1,10 @@
+[Unit]
+Description=Summarize new YouTube videos from feeds
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/yt-summarize-feeds --limit 10
+StandardOutput=journal
+StandardError=journal

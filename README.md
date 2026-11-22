@@ -23,7 +23,7 @@ Flags:
 
 | Path             | Target          | Notes                                                                             |
 | ---------------- | --------------- | --------------------------------------------------------------------------------- |
-| `dot-config/`    | `~/.config/`    | `nvim`, `zsh`, `ghostty`, `newsraft`, `worktrunk`                                 |
+| `dot-config/`    | `~/.config/`    | `nvim`, `zsh`, `ghostty`, `newsraft`, `worktrunk`, `systemd/user`                 |
 | `dot-local/bin/` | `~/.local/bin/` | user scripts                                                                      |
 | `dot-vim/`       | `~/.vim/`       | rescue vim config                                                                 |
 | `dot-bashrc`     | `~/.bashrc`     | rescue shell fallback                                                             |
@@ -125,4 +125,4 @@ needed: `mypy`, `sqlfluff`.
 | Screen/clipboard | `grim`, `slurp`, `cliphist`, `wl-clipboard`                                                                     |
 | File/image       | `yazi`, `imv`                                                                                                   |
 | Apps/media       | `firefox`, `newsraft`, `mpv`, `surfraw`, `yt-dlp`, `ollama`, `restic`, `task`, `keyd`                           |
-| Agents           | `claude-code` (AUR). `dot-codex/` and OpenCode config are stowed, but neither tool is installed by the playbook |
+| Agents           | `claude-code` (AUR). `dot-codex/` is stowed, but the playbook does not install Codex |
