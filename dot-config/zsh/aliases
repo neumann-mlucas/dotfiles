@@ -69,8 +69,9 @@ alias vd='uvx --with openpyxl --with pyarrow --with psycopg2-binary visidata'
 alias yt-dlp='uvx yt-dlp'
 
 # ansible
-alias ansible-maintenance="ansible-playbook -K -i ~/repos/neumann-mlucas/ansible/inventories/hosts ~/repos/neumann-mlucas/ansible/playbooks/maintenance.yml"
-alias ansible-maintenance-server="ansible-playbook -i ~/repos/neumann-mlucas/ansible/inventories/hosts ~/repos/neumann-mlucas/ansible/playbooks/maintenance.yml -l homeserver -K"
+# ANSIBLE_CONFIG loads the repo ansible.cfg (roles, inventory) from any directory.
+alias ansible-maintenance="ANSIBLE_CONFIG=~/repos/neumann-mlucas/ansible/ansible.cfg ansible-playbook -K ~/repos/neumann-mlucas/ansible/playbooks/maintenance.yml"
+alias ansible-maintenance-server="ANSIBLE_CONFIG=~/repos/neumann-mlucas/ansible/ansible.cfg ansible-playbook -K ~/repos/neumann-mlucas/ansible/playbooks/maintenance.yml -l homeserver"
 
 # misc
 alias stow-dot="stow --restow -v --no-folding --dotfiles -t ~ -d ~/.dotfiles ."
