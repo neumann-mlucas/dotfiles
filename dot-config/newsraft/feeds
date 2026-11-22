@@ -61,12 +61,15 @@ https://openai.com/blog/rss.xml "OpenAI"
 @ Econ/Finance < reload-period 30
 https://marginalrevolution.com/feed "Marginal Revolution"
 https://www.bitsaboutmoney.com/archive/rss/ "Bits about Money"
+https://www.construction-physics.com/feed "Construction Physics"
 https://www.overcomingbias.com/feed "Robin Hanson"
+https://worksinprogress.co/rss.xml "Works in Progress"
 
 @ Science < reload-period 30
 https://feeds.arstechnica.com/arstechnica/index "Ars Technica"
 https://feeds.feedburner.com/ProcNatlAcadSciUsaMost-readFull-textArticles?format=xml
 https://pdb101.rcsb.org/motm/rss.xml
+https://revistapesquisa.fapesp.br/feed/ "Pesquisa FAPESP"
 https://phys.org/rss-feed/breaking/biology-news/molecular-computational
 https://phys.org/rss-feed/breaking/chemistry-news/biochemistry
 https://www.nature.com/subjects/molecular-dynamics.rss
@@ -77,17 +80,16 @@ https://backreaction.blogspot.com/feeds/posts/default "Sabine Hossenfelder"
 https://preposterousuniverse.com/blog/feed/ "Sean Carroll"
 
 @ Humanities < reload-period 30
-http://www.aaronsw.com/2002/feeds/pgessays.rss "Paul Graham Essays"
+https://acoup.blog/feed/ "ACOUP - Bret Devereaux"
 https://dynomight.net/feed.xml
+https://www.experimental-history.com/feed "Experimental History"
 https://piaui.folha.uol.com.br/feed/ "Piauí"
 https://www.exurbe.com/feed
 
 @ Newsletters < reload-period 30
-https://kill-the-newsletter.com/feeds/blayfdypxujlhsnsu90y.xml
 https://kill-the-newsletter.com/feeds/dqscibk6yo1b7bskpeg0.xml
 https://kill-the-newsletter.com/feeds/qdsrf0mk1lvg3ll8.xml
 https://kill-the-newsletter.com/feeds/y6ul185knoj582l8.xml
-https://rss.beehiiv.com/feeds/4aF2pGVAEN.xml
 
 @ YouTube - Brazil < reload-period 30
 https://www.youtube.com/feeds/videos.xml?channel_id=UC9zqTTVeClpqMQ5CLuJdWtw "Drauzio Varella"
@@ -108,6 +110,7 @@ https://www.youtube.com/feeds/videos.xml?channel_id=UCv_vLHiWVBh_FR9vbeuiY-A "Hi
 https://www.youtube.com/feeds/videos.xml?channel_id=UC3O_3ANkml4_3wSK1yPG5DQ "Spectral Collective"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCH-Z8ya93m7_RD02WsCSZYA "Derivando"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCK8XIGR5kRidIw2fWqwyHRA "Reducible"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCSju5G2aFaWMqn-_0YBtq5A "Stand-up Maths"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCWQ7rdjjB-ujwQl0ErJ01eg "Ben Syversen"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCYO_jab_esuFRV4b17AJtAw "3Blue1Brown"
 https://www.youtube.com/feeds/videos.xml?channel_id=UConVfxXodg78Tzh5nNu85Ew "Welch Labs"
@@ -165,7 +168,9 @@ https://www.youtube.com/feeds/videos.xml?channel_id=UCgNg3vwj3xt7QOrcIDaHdFg "Po
 @ YouTube - Arts & Culture < reload-period 30
 https://www.youtube.com/feeds/videos.xml?channel_id=UCDETFHKteb-C_EaXmRKvP4w "Sisyphus 55"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCDlz9C2bhSW6dcVn_PO5mYw "The Met"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCJkMlOu7faDgqh4PfzbpLdg "Nerdwriter"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCVFZfbBdOZvxmdxp94lx8LA "Nothing New"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCXkNod_JcH7PleOjwK_8rYQ "Polyphonic"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCX60pqsaaAPFh2sUZEaNKJA "HGModernism"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCePDFpCr78_qmVtpoB1Axaw "Great Art Explained"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCi7l9chXMljpUft67vw78qw "Sideways"
@@ -178,11 +183,15 @@ https://www.youtube.com/feeds/videos.xml?channel_id=UCEaoODAZJF5w20lzcX1v03w "Jo
 https://www.youtube.com/feeds/videos.xml?channel_id=UCfsznjef2zGJnrCRQBXqo6Q "Machine Thinking"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCtGG8ucQgEJPeUPhJZ4M4jA "Rare Earth"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCz1oFxMrgrQ82-276UCOU9w "Atlas Pro"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCdgUN8rX3SEb9L7FDub3I6A "Design Theory"
 
 @ YouTube - German < reload-period 30
 https://www.youtube.com/feeds/videos.xml?channel_id=UC5E9-r42JlymhLPnDv2wHuA "Terra X Lesch & Co"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCA3mpqm67CpJ13YfA8qAnow "Terra X History"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCE2hJ9CYR57BYhk3TjGVG6w "Breaking Lab"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCKGMHVipEvuZudhHD05FOYA "Simplicissimus"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCLLibJTCy3sXjHLVaDimnpQ "ARTEde"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCMIgOXM2JEQ2Pv2d0_PVfcg "DW Deutsch"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCesjlAoEgN_Sz_cKTvKEmmw "Doktor Whatson"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCsVWpmoRsNAWZb59b6Pt9Kg "MrWissen2go Geschichte"
+https://www.youtube.com/feeds/videos.xml?channel_id=UCwRH985XgMYXQ6NxXDo8npw "Dinge Erklärt – Kurzgesagt"
