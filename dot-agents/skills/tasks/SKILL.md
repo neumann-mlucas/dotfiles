@@ -40,7 +40,7 @@ Rules:
 | `+in` | Captured, not triaged. Every task the agent adds without a clear project gets `+in`. |
 | `+errand` | Must be done while out (shop, post office). |
 | `+call` | A phone call or a message to send. |
-| `+waiting` | Blocked on another person. Annotate who and since when. |
+| `+delegated` | Blocked on another person. Annotate who and since when. Not the same as `wait:`, which only hides the task. |
 | `+next` | The user picked it for today. Add it only when the user asks. |
 | `repo:<absolute path>` | The checkout a code task belongs to. |
 | `due:` | Real deadlines only: a date with a cost if missed. |
@@ -108,11 +108,13 @@ If the user is going out or asks what to do in town, list `+errand` and `+call` 
 
 Run the steps in this order and ask for a decision on each item. Never make the decision yourself.
 
-1. Inbox: `+in`. For each task, set a project, set dates, or delete it.
+`task export <report>` applies the filter of that report from `base.rc`. Do not copy report filters into commands.
+
+1. Inbox: `task rc.context=none export inbox`. For each task, set a project, set dates, or delete it.
 2. Overdue: `+OVERDUE`. For each task, do it, give it a new date, or drop it.
-3. Waiting: `+waiting`. Suggest a follow-up for items older than 7 days.
-4. Stale: `status:pending modified.before:now-30d`. Ask if each task is still relevant.
-5. Next week: `due.before:now+8d`. Show the list.
+3. Delegated: `+delegated`. Suggest a follow-up for items older than 7 days.
+4. Stale: `task rc.context=none export stale`. Ask if each task is still relevant.
+5. This week: `task rc.context=none export week`. Show the list.
 6. Habits: `harsh log --json`. Show each habit with a broken streak or with `days_until_break` of 0.
 
 ### Handoff for code work
@@ -135,6 +137,7 @@ Habits are not tasks. They live in harsh, a habit tracker with plain-text files:
 
 Rules:
 
+- If `$HARSHPATH` is empty, run harsh as `HARSHPATH=~/Sync/harsh harsh ...`. Without it, harsh creates a new empty `~/.config/harsh`.
 - Read habit state with `harsh log --json`. It gives `streak_status`, `days_until_break`, and `completed_in_window` for each habit.
 - `harsh ask` is interactive. Never run it. To record an entry, append one line to the log file.
 - Syncthing shares the log with other devices. If `$HARSHPATH` holds `*.sync-conflict-*` files, tell the user before you write.
@@ -146,4 +149,5 @@ Rules:
 
 - Taskwarrior does not send reminders. If the user asks to be reminded at a time, add the task with `due:`, and say that no alert fires.
 - No calendar. Meetings and appointments belong in the user's calendar. A task can point to them.
-- Tasks are local. They do not appear in git or PRs.
+- A systemd user timer (`task-sync.timer`) syncs tasks with the homeserver every 15 minutes. Do not run `task sync` yourself.
+- Tasks do not appear in git or PRs.
