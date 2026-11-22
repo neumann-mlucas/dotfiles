@@ -34,7 +34,9 @@ Rules:
 |---|---|
 | `project:work.<client>` | Paid work. The `work` context shows only this tree. |
 | `project:dev.<repo>` | Personal code projects. |
-| `project:home` | Household, admin, health, money. |
+| `project:home.<area>` | Household: `health`, `finance`, `chores`, `admin`. |
+| `project:career.<area>` | Job search and career moves. |
+| `project:self.<area>` | Study, social life, and personal growth: `study.frm`, `social`. |
 | `+in` | Captured, not triaged. Every task the agent adds without a clear project gets `+in`. |
 | `+errand` | Must be done while out (shop, post office). |
 | `+call` | A phone call or a message to send. |
@@ -48,6 +50,30 @@ Rules:
 | `depends:<uuid>` | This task cannot start before the other is done. |
 
 Never invent a deadline. If the user gives none, leave `due` empty.
+
+### Annotations
+
+Annotations hold what a later session needs to act without asking the user. Start each annotation with one of these keys:
+
+| Key | Holds |
+|---|---|
+| `contact:` | Name, role, phone, and channel. |
+| `context:` | Facts the description cannot hold: why, history, constraints. |
+| `done:` | The check that closes the task. |
+| `then:` | The action right after closing it. |
+| `doc:` | A path to a file with more detail. |
+| `handoff:` | The state of unfinished code work (see Handoff). |
+
+- Read annotations before you act on a task.
+- If a task has a `then:` annotation, do that step when you close the task.
+- If a fact changes, `denotate` the old annotation and add the new one. Never keep two versions.
+- A non-code project has a folder in `~/notes/projects/<project>/`. Its `README.md` holds the goal, deadline, and plan. Link it with `doc:`.
+
+Read all annotations of a task:
+
+```bash
+task rc.context=none <uuid> export | jq -r '.[0].annotations[]?.description'
+```
 
 ## Workflows
 
@@ -87,6 +113,7 @@ Run the steps in this order and ask for a decision on each item. Never make the 
 3. Waiting: `+waiting`. Suggest a follow-up for items older than 7 days.
 4. Stale: `status:pending modified.before:now-30d`. Ask if each task is still relevant.
 5. Next week: `due.before:now+8d`. Show the list.
+6. Habits: `harsh log --json`. Show each habit with a broken streak or with `days_until_break` of 0.
 
 ### Handoff for code work
 
@@ -98,6 +125,21 @@ When a coding session stops with work unfinished:
 4. Split work that remains into tasks with `depends:` where order matters.
 
 A new session reads the handoff with `task <uuid> export | jq -r '.[0].annotations[]?.description'`.
+
+## Habits
+
+Habits are not tasks. They live in harsh, a habit tracker with plain-text files:
+
+- `~/.config/harsh/habits` lists each habit and its frequency: `1` daily, `3/7` three times in 7 days, `1w` weekly.
+- `~/.config/harsh/log` holds one line per entry: `YYYY-MM-DD : <habit> : y|n|s : <comment> : <amount>`.
+
+Rules:
+
+- Read habit state with `harsh log --json`. It gives `streak_status`, `days_until_break`, and `completed_in_window` for each habit.
+- `harsh ask` is interactive. Never run it. To record an entry, append one line to the log file.
+- Use the exact habit name from the habits file. Never write `:` inside a comment.
+- Add, change, or retire a habit only when the user asks. Edit the habits file for that.
+- If the user wants a repeat that has a deadline or a cost if missed, make it a recurring task, not a habit.
 
 ## Limits
 
