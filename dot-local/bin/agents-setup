@@ -13,6 +13,10 @@ skills=(
   vercel-labs/skills:find-skills
   lucifer1004/claude-skill-typst:typst
 )
+# Skills that live in a repo checkout. Each entry is "<path under ~/repos>:<skill name>".
+repo_skills=(
+  neumann-mlucas/git-archaeologist/skills/git-arch-analyze:git-arch-analyze
+)
 
 log() { printf 'agents-setup: %s\n' "$*" >&2; }
 have() { command -v "$1" >/dev/null; }
@@ -47,19 +51,50 @@ setup_claude() {
   fi
 }
 
-# Install each skill to ~/.agents/skills, then link it for Claude Code.
-# Claude Code does not read ~/.agents/skills.
+# Point the symlink $2 at $1. Replace a symlink with another target; never touch a real file or dir.
+link_skill() {
+  local target=$1 link=$2
+  if [[ -L $link ]]; then
+    [[ $(readlink "$link") == "$target" ]] && return
+    ln -sfn "$target" "$link"
+    log "relinked $link"
+  elif [[ -e $link ]]; then
+    log "kept $link (not a symlink)"
+  else
+    ln -s "$target" "$link"
+    log "linked $link"
+  fi
+}
+
+# ~/.agents/skills holds every skill: stowed from dot-agents, third-party, and repo skills.
+# Claude Code does not read it, so each skill gets one relative link in ~/.claude/skills.
 setup_skills() {
-  local entry repo name link
-  mkdir -p "$HOME/.claude/skills"
+  local entry repo name path dir
+  mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
   for entry in "${skills[@]}"; do
     repo=${entry%%:*}
     name=${entry#*:}
     if [[ ! -d $HOME/.agents/skills/$name ]]; then
-      npx -y skills add "$repo" --global --skill "$name" --yes
+      if have npx; then
+        npx -y skills add "$repo" --global --skill "$name" --yes
+      else
+        log "npx not found, skipped $name"
+      fi
     fi
-    link=$HOME/.claude/skills/$name
-    [[ -e $link || -L $link ]] || ln -s "$HOME/.agents/skills/$name" "$link"
+  done
+  for entry in "${repo_skills[@]}"; do
+    path=$HOME/repos/${entry%%:*}
+    name=${entry#*:}
+    if [[ -d $path ]]; then
+      link_skill "$path" "$HOME/.agents/skills/$name"
+    else
+      log "missing $path, skipped $name"
+    fi
+  done
+  shopt -s nullglob
+  for dir in "$HOME"/.agents/skills/*/; do
+    name=$(basename "$dir")
+    link_skill "../../.agents/skills/$name" "$HOME/.claude/skills/$name"
   done
 }
 
@@ -78,7 +113,7 @@ main() {
   install_config "$dotfiles/setup/codex-config.toml" "$HOME/.codex/config.toml"
   # `task context` writes to the main taskrc, so it stays local and includes the stowed base.rc.
   install_config "$dotfiles/setup/taskrc" "$HOME/.config/task/taskrc"
-  if have npx; then setup_skills; else log "npx not found, skipped skills"; fi
+  setup_skills
 }
 
 main "$@"

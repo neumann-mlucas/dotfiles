@@ -23,7 +23,7 @@ Flags:
 
 | Path             | Target          | Notes                                                                             |
 | ---------------- | --------------- | --------------------------------------------------------------------------------- |
-| `dot-config/`    | `~/.config/`    | `nvim`, `zsh`, `ghostty`, `newsraft`, `worktrunk`, `systemd/user`                 |
+| `dot-config/`    | `~/.config/`    | `nvim`, `zsh`, `ghostty`, `newsraft`, `worktrunk`, `systemd/user`, `environment.d`                 |
 | `dot-local/bin/` | `~/.local/bin/` | user scripts                                                                      |
 | `dot-vim/`       | `~/.vim/`       | rescue vim config                                                                 |
 | `dot-bashrc`     | `~/.bashrc`     | rescue shell fallback                                                             |
@@ -31,7 +31,7 @@ Flags:
 | `dot-zshenv`     | `~/.zshenv`     | bootstrap: sets `ZDOTDIR`, sources `dot-config/zsh/dot-zshenv` (real env)         |
 | `dot-ssh/`       | `~/.ssh/`       | placeholder                                                                       |
 | `dot-agents/`    | `~/.agents/`    | shared `AGENTS.md` + skills (cross-tool location)                                 |
-| `dot-claude/`    | `~/.claude/`    | `CLAUDE.md` + per-skill links → `dot-agents/` (Claude ignores `~/.agents/skills`) |
+| `dot-claude/`    | `~/.claude/`    | `CLAUDE.md` link → `dot-agents/`, hooks                                           |
 | `dot-codex/`     | `~/.codex/`     | `AGENTS.md` link → `dot-agents/`                                                  |
 
 ## Local overrides
@@ -49,9 +49,10 @@ there — never commit it:
 defaults, then excludes repo-only files: `README.*`, `LICENSE`, `.github/`,
 `.pre-commit-config.yaml`, `stylua.toml`, tool caches, and itself.
 
-Skills: add a link per skill, `dot-claude/skills/<name> -> ../../dot-agents/skills/<name>`.
-Never link the whole `skills/` dir: `--no-folding` merges it into
-`~/.claude/skills` (which holds non-stowed skills) as real dirs.
+Skills: `~/.agents/skills` holds every skill. Stow fills it from `dot-agents/skills`;
+`agents-setup` adds third-party and repo skills there. Claude Code does not read
+`~/.agents/skills`, so `agents-setup` gives each skill one relative link in
+`~/.claude/skills`. After you add a skill, run `stow-dot`, then `agents-setup`.
 
 ## Commits
 
