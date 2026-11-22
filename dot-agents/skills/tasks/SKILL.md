@@ -115,7 +115,7 @@ Run the steps in this order and ask for a decision on each item. Never make the 
 3. Delegated: `+delegated`. Suggest a follow-up for items older than 7 days.
 4. Stale: `task rc.context=none export stale`. Ask if each task is still relevant.
 5. This week: `task rc.context=none export week`. Show the list.
-6. Habits: `harsh log --json`. Show each habit with a broken streak or with `days_until_break` of 0.
+6. Habits: run the `harsh log --json` command from the Habits section. Show each habit with a broken streak or with `days_until_break` of 0.
 
 ### Handoff for code work
 
@@ -138,7 +138,11 @@ Habits are not tasks. They live in harsh, a habit tracker with plain-text files:
 Rules:
 
 - If `$HARSHPATH` is empty, run harsh as `HARSHPATH=~/Sync/harsh harsh ...`. Without it, harsh creates a new empty `~/.config/harsh`.
-- Read habit state with `harsh log --json`. It gives `streak_status`, `days_until_break`, and `completed_in_window` for each habit.
+- Read habit state with this command. The raw JSON holds 100 days of entries for each habit, so always filter it:
+
+  ```bash
+  harsh log --json | jq '.habits[] | {name, heading, frequency, streak_status, days_until_break, completed_in_window, logged_today}'
+  ```
 - `harsh ask` is interactive. Never run it. To record an entry, append one line to the log file.
 - Syncthing shares the log with other devices. If `$HARSHPATH` holds `*.sync-conflict-*` files, tell the user before you write.
 - Use the exact habit name from the habits file. Never write `:` inside a comment.
