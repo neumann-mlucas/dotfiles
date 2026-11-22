@@ -28,7 +28,7 @@ Flags:
 | `dot-vim/`       | `~/.vim/`       | rescue vim config                                                                 |
 | `dot-bashrc`     | `~/.bashrc`     | rescue shell fallback                                                             |
 | `dot-gitconfig`  | `~/.gitconfig`  |                                                                                   |
-| `dot-zshenv`     | `~/.zshenv`     | sets `ZDOTDIR=~/.config/zsh`                                                      |
+| `dot-zshenv`     | `~/.zshenv`     | bootstrap: sets `ZDOTDIR`, sources `dot-config/zsh/dot-zshenv` (real env)         |
 | `dot-ssh/`       | `~/.ssh/`       | placeholder                                                                       |
 | `dot-agents/`    | `~/.agents/`    | shared `AGENTS.md` + skills (cross-tool location)                                 |
 | `dot-claude/`    | `~/.claude/`    | `CLAUDE.md` + per-skill links → `dot-agents/` (Claude ignores `~/.agents/skills`) |
