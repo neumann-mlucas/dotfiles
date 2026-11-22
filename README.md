@@ -21,18 +21,18 @@ Flags:
 
 ## Layout
 
-| Path | Target | Notes |
-| --- | --- | --- |
-| `dot-config/` | `~/.config/` | `nvim`, `zsh`, `ghostty`, `newsraft`, `worktrunk` |
-| `dot-local/bin/` | `~/.local/bin/` | user scripts |
-| `dot-vim/` | `~/.vim/` | rescue vim config |
-| `dot-bashrc` | `~/.bashrc` | rescue shell fallback |
-| `dot-gitconfig` | `~/.gitconfig` | |
-| `dot-zshenv` | `~/.zshenv` | sets `ZDOTDIR=~/.config/zsh` |
-| `dot-ssh/` | `~/.ssh/` | placeholder |
-| `dot-agents/` | `~/.agents/` | shared `AGENTS.md` + skills (cross-tool location) |
-| `dot-claude/` | `~/.claude/` | `CLAUDE.md` + per-skill links → `dot-agents/` (Claude ignores `~/.agents/skills`) |
-| `dot-codex/` | `~/.codex/` | `AGENTS.md` link → `dot-agents/` |
+| Path             | Target          | Notes                                                                             |
+| ---------------- | --------------- | --------------------------------------------------------------------------------- |
+| `dot-config/`    | `~/.config/`    | `nvim`, `zsh`, `ghostty`, `newsraft`, `worktrunk`                                 |
+| `dot-local/bin/` | `~/.local/bin/` | user scripts                                                                      |
+| `dot-vim/`       | `~/.vim/`       | rescue vim config                                                                 |
+| `dot-bashrc`     | `~/.bashrc`     | rescue shell fallback                                                             |
+| `dot-gitconfig`  | `~/.gitconfig`  |                                                                                   |
+| `dot-zshenv`     | `~/.zshenv`     | sets `ZDOTDIR=~/.config/zsh`                                                      |
+| `dot-ssh/`       | `~/.ssh/`       | placeholder                                                                       |
+| `dot-agents/`    | `~/.agents/`    | shared `AGENTS.md` + skills (cross-tool location)                                 |
+| `dot-claude/`    | `~/.claude/`    | `CLAUDE.md` + per-skill links → `dot-agents/` (Claude ignores `~/.agents/skills`) |
+| `dot-codex/`     | `~/.codex/`     | `AGENTS.md` link → `dot-agents/`                                                  |
 
 ## Local overrides
 
@@ -58,72 +58,71 @@ Never link the whole `skills/` dir: `--no-folding` merges it into
 This repo does not use Conventional Commits types (`feat:`, `docs(...)`).
 Each subject is one line: `<area>: <summary>`, in lowercase imperative mood.
 
-| Area | Paths |
-|---|---|
-| `ai` | `dot-agents/`, `dot-claude/`, `dot-codex/`, `setup/`, `agents-setup` |
-| `shell` | `dot-config/zsh/`, `dot-zshenv`, `dot-bashrc`, `dot-local/bin/` scripts |
-| `vim` | `dot-config/nvim/`, `dot-vim/` |
-| `wm` | `dot-config/hypr/`, `waybar/`, `wofi/`, `mako/` |
-| `fm` | `dot-config/yazi/` |
-| `terminal` | `dot-config/ghostty/` |
-| `rss` | `dot-config/newsraft/` |
-| `git` | `dot-gitconfig`, `dot-gitignore_global` |
-| `ssh` | `dot-ssh/` |
-| `chore` | Repo tooling, plugin bumps, changes across many areas |
+| Area       | Paths                                                                   |
+| ---------- | ----------------------------------------------------------------------- |
+| `ai`       | `dot-agents/`, `dot-claude/`, `dot-codex/`, `setup/`, `agents-setup`    |
+| `shell`    | `dot-config/zsh/`, `dot-zshenv`, `dot-bashrc`, `dot-local/bin/` scripts |
+| `vim`      | `dot-config/nvim/`, `dot-vim/`                                          |
+| `wm`       | `dot-config/hypr/`, `waybar/`, `wofi/`, `mako/`                         |
+| `fm`       | `dot-config/yazi/`                                                      |
+| `terminal` | `dot-config/ghostty/`                                                   |
+| `rss`      | `dot-config/newsraft/`                                                  |
+| `git`      | `dot-gitconfig`, `dot-gitignore_global`                                 |
+| `ssh`      | `dot-ssh/`                                                              |
+| `chore`    | Repo tooling, plugin bumps, changes across many areas                   |
 
 For a new tool, use its config directory name as the area. Example: `task`.
 
 ## Software
 
 Inventory across hosts. Not every item is required on every host. Linux
-provisioning lives in `~/.ansible`; macOS installs via Homebrew.
+provisioning lives in `~/repos/neumann-mlucas/ansible`; macOS installs via Homebrew.
 
 ### Core
 
-| Category | Packages |
-| --- | --- |
-| Shell | `zsh`, `bash`, `starship`, `zoxide`, `direnv`, `fzf`, `zsh-autosuggestions`, `zsh-history-substring-search`, `zsh-syntax-highlighting` |
-| Editors/terminal | `neovim`, `vim`, `ptpython`, `ghostty` |
-| Base | `git`, `stow`, `curl`, `wget`, `make`, `flatpak` |
+| Category         | Packages                                                                                                                               |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Shell            | `zsh`, `bash`, `starship`, `zoxide`, `direnv`, `fzf`, `zsh-autosuggestions`, `zsh-history-substring-search`, `zsh-syntax-highlighting` |
+| Editors/terminal | `neovim`, `vim`, `ptpython`, `ghostty`                                                                                                 |
+| Base             | `git`, `stow`, `curl`, `wget`, `make`, `flatpak`                                                                                       |
 
 ### CLI
 
-| Category | Packages |
-| --- | --- |
-| Replacements/viewers | `bat`, `eza`, `erdtree`, `ripgrep`, `fd`, `git-delta`, `difftastic`, `dust`, `duf`, `bottom`, `glow`, `tealdeer` |
-| Data/docs | `duckdb`, `jq`, `yq` (mikefarah; Arch pkg `go-yq` — Arch `yq` is the Python jq wrapper), `visidata`, `chafa`, `poppler`, `zathura`, `Foliate` |
-| Utilities | `tokei`, `hyperfine`, `just`, `sd`, `ast-grep`, `tree-sitter-cli`, `ctags`, `gping`, `socat`, `7zip`, `zip`, `atuin`, `choose`, `procs`, `ripgrep-all`, `sdcv` |
+| Category             | Packages                                                                                                                                                       |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Replacements/viewers | `bat`, `eza`, `erdtree`, `ripgrep`, `fd`, `git-delta`, `difftastic`, `dust`, `duf`, `bottom`, `glow`, `tealdeer`                                               |
+| Data/docs            | `duckdb`, `jq`, `yq` (mikefarah; Arch pkg `go-yq` — Arch `yq` is the Python jq wrapper), `visidata`, `chafa`, `poppler`, `zathura`, `Foliate`                  |
+| Utilities            | `tokei`, `hyperfine`, `just`, `sd`, `ast-grep`, `tree-sitter-cli`, `ctags`, `gping`, `socat`, `7zip`, `zip`, `atuin`, `choose`, `procs`, `ripgrep-all`, `sdcv` |
 
 ### Dev
 
-| Category | Packages |
-| --- | --- |
-| Languages | `go`, `rust` (Arch pkg, not rustup), `nodejs`, `pnpm`, `python`, `lua`, `luarocks`, `julia`, `ruby` |
-| Python | `uv`, `ruff`, `ty`, `pyright` |
-| Go tooling | `go-tools`, `gopls`, `gofumpt`, `golangci-lint`, `govulncheck` |
-| Rust tooling | `rust-analyzer`, `cargo-nextest`, `cargo-deny`, `cargo-machete`, `cargo-update`, `cargo-mutants` (AUR) |
-| Lua tooling | `lua-language-server` |
-| Checks/CI | `prek` (pre-commit runner), `gitleaks`, `actionlint`, `zizmor` |
-| Shell | `shellcheck`, `shfmt` |
-| Git | `gh`, `lazygit`, `git-cliff`, `worktrunk` (`wt`; agent worktrees, setup hooks in `dot-config/worktrunk/`) |
+| Category         | Packages                                                                                                               |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Languages        | `go`, `rust` (Arch pkg, not rustup), `nodejs`, `pnpm`, `python`, `lua`, `luarocks`, `julia`, `ruby`                    |
+| Python           | `uv`, `ruff`, `ty`, `pyright`                                                                                          |
+| Go tooling       | `go-tools`, `gopls`, `gofumpt`, `golangci-lint`, `govulncheck`                                                         |
+| Rust tooling     | `rust-analyzer`, `cargo-nextest`, `cargo-deny`, `cargo-machete`, `cargo-update`, `cargo-mutants` (AUR)                 |
+| Lua tooling      | `lua-language-server`                                                                                                  |
+| Checks/CI        | `prek` (pre-commit runner), `gitleaks`, `actionlint`, `zizmor`                                                         |
+| Shell            | `shellcheck`, `shfmt`                                                                                                  |
+| Git              | `gh`, `lazygit`, `git-cliff`, `worktrunk` (`wt`; agent worktrees, setup hooks in `dot-config/worktrunk/`)              |
 | Containers/infra | `docker`, `docker-buildx`, `docker-compose`, `lazydocker`, `kubectl`, `kubectx`, `k9s`, `argocd`, `helm`, `aws-cli-v2` |
-| Build/libs | `libpq` (brew; Arch `postgresql-libs`), `base-devel` |
+| Build/libs       | `libpq` (brew; Arch `postgresql-libs`), `base-devel`                                                                   |
 
 ### Python tools (via `uv tool install`)
 
-Current: `git-sim`, `radon`, `visidata`, `yt-dlp` (playbook), `ragwatcher`
-(manual: local checkout, `uv tool install ~/Desktop/Projects/ragwatcher`).
+Current: `git-sim`, `radon`, `visidata`, `yt-dlp` (playbook)
 
 Linters/type checkers come from pacman (above), not `uv tool`. Extend as
 needed: `mypy`, `sqlfluff`.
 
 ### Linux desktop (Arch + Hyprland)
 
-| Category | Packages |
-| --- | --- |
-| WM/compositor | `hyprland`, `hyprpaper`, `hyprsunset`, `waybar`, `mako`, `wofi` |
-| Session | `network-manager-applet`, `wireplumber`, `brightnessctl`, `playerctl` |
-| Screen/clipboard | `grim`, `slurp`, `cliphist`, `wl-clipboard` |
-| File/image | `yazi`, `imv` |
-| Apps/media | `firefox`, `newsraft`, `mpv`, `surfraw`, `yt-dlp`, `ollama`, `restic`, `task`, `keyd` |
-| Agents | `claude-code` (AUR). `dot-codex/` and OpenCode config are stowed, but neither tool is installed by the playbook |
+| Category         | Packages                                                                                                        |
+| ---------------- | --------------------------------------------------------------------------------------------------------------- |
+| WM/compositor    | `hyprland`, `hyprpaper`, `hyprsunset`, `waybar`, `mako`, `wofi`                                                 |
+| Session          | `network-manager-applet`, `wireplumber`, `brightnessctl`, `playerctl`                                           |
+| Screen/clipboard | `grim`, `slurp`, `cliphist`, `wl-clipboard`                                                                     |
+| File/image       | `yazi`, `imv`                                                                                                   |
+| Apps/media       | `firefox`, `newsraft`, `mpv`, `surfraw`, `yt-dlp`, `ollama`, `restic`, `task`, `keyd`                           |
+| Agents           | `claude-code` (AUR). `dot-codex/` and OpenCode config are stowed, but neither tool is installed by the playbook |

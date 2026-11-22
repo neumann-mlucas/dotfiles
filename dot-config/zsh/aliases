@@ -69,8 +69,8 @@ alias vd='uvx --with openpyxl --with pyarrow --with psycopg2-binary visidata'
 alias yt-dlp='uvx yt-dlp'
 
 # ansible
-alias ansible-maintenance="ansible-playbook -K -i ~/.ansible/inventories/hosts ~/.ansible/playbooks/maintenance.yml"
-alias ansible-maintenance-server="ansible-playbook -i ~/.ansible/inventories/hosts ~/.ansible/playbooks/maintenance.yml -l homeserver -K"
+alias ansible-maintenance="ansible-playbook -K -i ~/repos/neumann-mlucas/ansible/inventories/hosts ~/repos/neumann-mlucas/ansible/playbooks/maintenance.yml"
+alias ansible-maintenance-server="ansible-playbook -i ~/repos/neumann-mlucas/ansible/inventories/hosts ~/repos/neumann-mlucas/ansible/playbooks/maintenance.yml -l homeserver -K"
 
 # misc
 alias stow-dot="stow --restow -v --no-folding --dotfiles -t ~ -d ~/.dotfiles ."

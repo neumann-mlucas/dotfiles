@@ -63,7 +63,7 @@ Applies to docs, READMEs, code comments, commit/PR/issue bodies, memory files, p
 
 ## Design
 
-Ousterhout, *A Philosophy of Software Design*. Complexity = dependencies + obscurity; every rule below cuts one.
+Ousterhout, _A Philosophy of Software Design_. Complexity = dependencies + obscurity; every rule below cuts one.
 
 - Strategic over tactical: working code is not enough. Spend a little each change on better design; never ship a hack that raises complexity for the next change.
 - Deep modules: simple interface, powerful implementation. Interface cost paid by every caller. Many tiny shallow classes/functions = smell.
@@ -99,6 +99,27 @@ Ousterhout, *A Philosophy of Software Design*. Complexity = dependencies + obscu
 - One-line messages default. No body unless asked/needed.
 - NEVER add `Co-Authored-By: Claude ...` or "generated with Claude" trailers.
 - No attribution footers, no emoji, no marketing.
+
+## Workspace
+
+- Git clones live in `~/repos/<owner>/<repo>`. `<owner>` is the GitHub owner or Bitbucket workspace. Clone with `git clone <url> ~/repos/<owner>/<repo>`.
+- Branch worktrees live in `~/worktrees/<repo>/<branch>`. See Git Worktrees.
+- Non-git experiments go in `~/scratch`. Never leave files in `~` or `~/Desktop`.
+
+## Notes
+
+`~/notes` is a git repo for knowledge that spans repos or comes before a repo exists.
+
+- Repo-specific knowledge goes in that repo (AGENTS.md, specs, ADRs), not in `~/notes`.
+- `projects/<slug>/`: one folder per non-code Taskwarrior project. The folder name equals the Taskwarrior project name.
+- Start every project folder with `README.md`: goal, deadline, plan, and links to source material.
+- Store large source files (PDFs, books, exams) in `~/Sync`, not in `~/notes`. Link them by path.
+- If a project is done, move its folder to `archive/` and mark its tasks done.
+- `ideas/`: pre-repo specs. When the repo exists, move the spec into the repo's spec dir.
+- `research/`: agent reports, comparisons, and review findings. Name files `YYYY-MM-DD-<slug>.md`.
+- `handoffs/`: long session context. Name files `YYYY-MM-DD-<slug>.md`. Annotate the matching Taskwarrior task with the path.
+- `journal/`: daily log, `YYYY-MM-DD.md`. Write only when the user asks.
+- Commit each change in `~/notes` with a conventional commit.
 
 ## Git Worktrees
 
@@ -140,10 +161,7 @@ Ousterhout, *A Philosophy of Software Design*. Complexity = dependencies + obscu
 - Check shell scripts with `shellcheck script.sh`; never debug non-trivial shell by inspection only.
 - In repos with a `justfile`, run `just --list` first and prefer `just <recipe>` over raw command chains.
 - Benchmark with `hyperfine 'cmd'`; never hand-roll timing loops.
-- Count code size with `tokei`; never `wc -l` over sources.
-- Command examples → `tldr <cmd>` before web search.
-- Changelog → `git-cliff`, never hand-written.
 - PDF output → load the `typst-notes` skill (house template). Build with `typst compile`. Extract text with `pdftotext`; merge/split with `pdftk`.
 - After building a PDF → render with `pdftoppm -png -r 80 <file>.pdf /tmp/page`, read the pages, fix layout before claiming done.
-- Language toolchains (uv/ruff/ty, gofumpt/golangci-lint, cargo-*, shellcheck/shfmt) → load the `<lang>-guidelines` skill.
+- Language toolchains (uv/ruff/ty, gofumpt/golangci-lint, cargo-\*, shellcheck/shfmt) → load the `<lang>-guidelines` skill.
 - Todo, reminder, errand, "what next", or unfinished work to hand off → load the `tasks` skill (Taskwarrior).

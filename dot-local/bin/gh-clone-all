@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Clone every GitHub repo owned by OWNER into ROOT/OWNER/REPO.
+# Existing clones are fetched, never modified. Forks and archived repos are skipped
+# unless INCLUDE_FORKS=1 / INCLUDE_ARCHIVED=1.
+#
+# Usage: gh-clone-all [owner] [root]
+#   owner  defaults to the authenticated gh user
+#   root   defaults to ~/repos
+set -Eeuo pipefail
+
+owner=${1:-$(gh api user --jq .login)}
+root=${2:-$HOME/repos}
+jobs=${JOBS:-4}
+
+filter='.[]'
+[[ ${INCLUDE_FORKS:-0} == 1 ]] || filter+=' | select(.isFork | not)'
+[[ ${INCLUDE_ARCHIVED:-0} == 1 ]] || filter+=' | select(.isArchived | not)'
+filter+=' | .name'
+
+mkdir -p "$root/$owner"
+
+sync_one() {
+  local owner=$1 root=$2 name=$3
+  local dest="$root/$owner/$name"
+  if [[ -d $dest/.git ]]; then
+    git -C "$dest" fetch --all --prune --quiet && echo "fetched  $owner/$name"
+  elif [[ -e $dest ]]; then
+    echo "skipped  $owner/$name ($dest exists, not a git repo)" >&2
+  else
+    gh repo clone "$owner/$name" "$dest" -- --quiet && echo "cloned   $owner/$name"
+  fi
+}
+export -f sync_one
+
+gh repo list "$owner" --limit 1000 --json name,isFork,isArchived --jq "$filter" |
+  xargs -P "$jobs" -I{} bash -c 'sync_one "$@"' _ "$owner" "$root" {}
