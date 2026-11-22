@@ -1,0 +1,8 @@
+[Unit]
+Description=Sync Taskwarrior with the homeserver
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/task rc.confirmation=off rc.verbose=nothing sync
