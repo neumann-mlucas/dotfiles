@@ -130,13 +130,14 @@ A new session reads the handoff with `task <uuid> export | jq -r '.[0].annotatio
 
 Habits are not tasks. They live in harsh, a habit tracker with plain-text files:
 
-- `~/.config/harsh/habits` lists each habit and its frequency: `1` daily, `3/7` three times in 7 days, `1w` weekly.
-- `~/.config/harsh/log` holds one line per entry: `YYYY-MM-DD : <habit> : y|n|s : <comment> : <amount>`.
+- `$HARSHPATH/habits` (`~/Sync/harsh/habits`) lists each habit and its frequency: `1` daily, `3/7` three times in 7 days, `1w` weekly.
+- `$HARSHPATH/log` (`~/Sync/harsh/log`) holds one line per entry: `YYYY-MM-DD : <habit> : y|n|s : <comment> : <amount>`.
 
 Rules:
 
 - Read habit state with `harsh log --json`. It gives `streak_status`, `days_until_break`, and `completed_in_window` for each habit.
 - `harsh ask` is interactive. Never run it. To record an entry, append one line to the log file.
+- Syncthing shares the log with other devices. If `$HARSHPATH` holds `*.sync-conflict-*` files, tell the user before you write.
 - Use the exact habit name from the habits file. Never write `:` inside a comment.
 - Add, change, or retire a habit only when the user asks. Edit the habits file for that.
 - If the user wants a repeat that has a deadline or a cost if missed, make it a recurring task, not a habit.
