@@ -46,13 +46,16 @@ fpath=($ZDOTDIR/completions $fpath)
 autoload -Uz compinit
 
 # Cache compinit: skip insecure-dir scan if zcompdump is <24h old (~100ms saved).
-_zdump=$XDG_CACHE_HOME/zsh/zcompdump
-if [[ -n $_zdump(#qNmh+24) ]]; then
-  compinit -d $_zdump         # stale (>24h) → full security check
-else
-  compinit -C -d $_zdump      # fresh → skip insecure-dir scan
-fi
-unset _zdump
+# (#q...) needs EXTENDED_GLOB; set it only here, it breaks `HEAD^` globally.
+() {
+  setopt localoptions extendedglob
+  local zdump=$XDG_CACHE_HOME/zsh/zcompdump
+  if [[ -n $zdump(#qNmh+24) ]]; then
+    compinit -d $zdump          # stale (>24h) → full security check
+  else
+    compinit -C -d $zdump       # fresh → skip insecure-dir scan
+  fi
+}
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
@@ -87,7 +90,7 @@ export FZF_DEFAULT_OPTS="
     --bind 'ctrl-u:preview-up'
     --bind '?:toggle-preview'"
 
-export FZF_ALT_C_OPTS="--preview 'et -I {}'"
+export FZF_ALT_C_OPTS="--preview 'erd -I {}'"
 export FZF_CTRL_R_OPTS="--preview-window=hidden"
 
 #-------------------------------------------------------------------------------
@@ -254,5 +257,3 @@ done
 #-------------------------------------------------------------------------------
 
 unfunction _src
-fpath=(~/.zsh/completions $fpath)
-autoload -U compinit && compinit
