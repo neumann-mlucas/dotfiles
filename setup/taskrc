@@ -1,3 +1,0 @@
-# Local Taskwarrior config. `task context` and `task config` write here.
-# Shared settings come from the stowed base file.
-include ~/.config/task/base.rc

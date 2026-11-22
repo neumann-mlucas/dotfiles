@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Install the Claude Code and Codex state that stow cannot link:
 # config files, plugins, the MCP server, and third-party skills.
-# It also creates the local taskrc that the `tasks` skill needs.
 # The script is idempotent. It never overwrites an existing config file.
 set -Eeuo pipefail
 
@@ -111,8 +110,6 @@ main() {
   install_config "$dotfiles/setup/claude-settings.json" "$HOME/.claude/settings.json"
   if have claude; then setup_claude; else log "claude not found, skipped Claude Code"; fi
   install_config "$dotfiles/setup/codex-config.toml" "$HOME/.codex/config.toml"
-  # `task context` writes to the main taskrc, so it stays local and includes the stowed base.rc.
-  install_config "$dotfiles/setup/taskrc" "$HOME/.config/task/taskrc"
   setup_skills
 }
 
