@@ -56,15 +56,10 @@ alias vtb='nvim -p'
 alias fastvim='nvim -n -u NONE -i NONE -N'
 
 # python stuff
-alias git-sim='uvx git-sim'
-alias isort='uvx ruff check --select I,RUF022 --fix'
+# ruff and prek come from pacman; git-sim, radon, visidata, yt-dlp from `uv tool`.
+alias isort='ruff check --select I,RUF022 --fix'
 alias ppy='uvx ptpython --with pandas'
-alias prek='uvx prek'
-alias radon='uvx radon'
-alias ruff='uvx ruff'
 alias sqlfluff='uvx sqlfluff fix --dialect postgres'
-alias vd='uvx --with openpyxl --with pyarrow --with psycopg2-binary visidata'
-alias yt-dlp='uvx yt-dlp'
 
 # ansible
 # ANSIBLE_CONFIG loads the repo ansible.cfg (roles, inventory) from any directory.
