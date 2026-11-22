@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
+# Open a new dated scratch file in ~/scratch with $EDITOR.
 set -e
 set -u
 set -o pipefail
 
-file="$(mktemp)"
+dir="$HOME/scratch"
+mkdir -p "$dir"
+file="$(mktemp -p "$dir" "$(date +%F)-XXXX.md")"
 echo "Editing $file"
 exec "$EDITOR" "$file"
