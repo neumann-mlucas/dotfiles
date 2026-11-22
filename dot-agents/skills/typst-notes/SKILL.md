@@ -9,7 +9,7 @@ Every PDF uses one template, so all documents look the same. The `typst` skill c
 
 ## Workflow
 
-1. Choose the output folder. If the user names no path, use `~/Documents/notes/<YYYY-MM-DD>-<slug>/`.
+1. Choose the output folder. If the user names no path, use `~/scratch/<YYYY-MM-DD>-<slug>/`.
 2. Copy the template files into that folder. Typst cannot import files outside the project root.
    ```bash
    cp ~/.agents/skills/typst-notes/assets/notes.typ "$dir/"
