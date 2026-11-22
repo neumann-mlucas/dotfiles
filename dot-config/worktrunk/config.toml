@@ -1,7 +1,9 @@
 # worktrunk user config. Defaults: `wt config create --help`.
 # Replaces the old ~/.local/bin/wt setup steps for every new worktree.
 
-worktree-path = "~/worktrees/{{ repo }}/{{ branch | sanitize }}"
+# Parent dir of the clone = owner, per the ~/repos/<owner>/<repo> layout.
+# `{{ owner }}` is not used: it fails on repos with no remote.
+worktree-path = "~/worktrees/{{ repo_path | dirname | basename }}/{{ repo }}/{{ branch | sanitize }}"
 
 [[pre-start]]
 copy = """

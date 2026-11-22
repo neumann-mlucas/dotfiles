@@ -103,7 +103,7 @@ Ousterhout, _A Philosophy of Software Design_. Complexity = dependencies + obscu
 ## Workspace
 
 - Git clones live in `~/repos/<owner>/<repo>`. `<owner>` is the GitHub owner or Bitbucket workspace. Clone with `git clone <url> ~/repos/<owner>/<repo>`.
-- Branch worktrees live in `~/worktrees/<repo>/<branch>`. See Git Worktrees.
+- Branch worktrees live in `~/worktrees/<owner>/<repo>/<branch>`. See Git Worktrees.
 - Non-git experiments go in `~/scratch`. Never leave files in `~` or `~/Desktop`.
 
 ## Notes
